@@ -3,209 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balinarska Liga - Lestvice</title>
+    <title>Štajerska Balinarska Liga</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; background-color: #f8f9fa; color: #333; }
+        /* --- BAZIČNI STILI & POSTAVITEV (SPA) --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            color: #333;
+        }
+
+        /* --- STRANSKI MENI (SIDEBAR) --- */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #1e3a8a;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #38bdf8;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 15px 25px;
+            color: #e5e7eb;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .menu-item:hover {
+            background-color: #1e40af;
+            color: white;
+        }
+
+        /* --- PODMENI --- */
+        .dropdown-container {
+            max-height: 0;
+            overflow: hidden;
+            background-color: #172554;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .dropdown-container div {
+            display: block;
+            padding: 12px 40px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .dropdown-container div:hover {
+            color: #38bdf8;
+        }
+
+        .dropdown-otvoren {
+            max-height: 200px;
+        }
+
+        /* --- GLAVNA VSEBINA DESNO --- */
+        .glavna-vsebina {
+            margin-left: 250px;
+            padding: 40px;
+            width: calc(100% - 250px);
+            box-sizing: border-box;
+        }
+
+        /* --- STRANI (POGLEDI) --- */
+        .stran {
+            display: none; /* Privzeto skrijemo vse, JS bo prikazal izbrano */
+        }
+        .stran-aktivna {
+            display: block !important;
+        }
+
+        /* --- STILI ZA TABELE & KROGE --- */
         h1 { text-align: center; color: #1eb909; margin-bottom: 30px; }
-        h2 { color: #b90909; border-bottom: 2px solid #b90909; padding-bottom: 8px; max-width: 800px; margin: 40px auto 20px auto; }
-        .tabela-kontejner { overflow-x: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; }
+        h2 { color: #b90909; border-bottom: 2px solid #b90909; padding-bottom: 8px; max-width: 900px; margin: 40px auto 20px auto; }
+        h3.naslov-kroga { color: #1e3a8a; background: #e0f2fe; padding: 10px 15px; border-radius: 5px; max-width: 900px; margin: 30px auto 10px auto; }
+        h4.naslov-prestavljene { color: #b45309; margin: 15px auto 5px auto; max-width: 900px; font-style: italic; font-size: 0.95rem;}
+        
+        .tabela-kontejner { overflow-x: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto 20px auto; box-sizing: border-box;}
+        .tabela-Mala { max-width: 900px; margin: 0 auto 30px auto; border: 1px dashed #b45309; padding: 10px; border-radius: 8px; background: #fffbef;}
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: center; }
         th { background-color: #1eb909; color: white; font-weight: 600; }
+        .tabela-Mala th { background-color: #b45309; }
         tr:hover { background-color: #f1f5f9; }
+        
         .loading { text-align: center; font-style: italic; color: #666; margin-top: 50px; font-size: 1.2rem; }
+        .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
+        
+        /* Centriranje vseh stolpcev razen imena ekipe na lestvici */
+        th:nth-child(2), td:nth-child(2) { text-align: left; }
     </style>
 </head>
 <body>
 
-    <h1>🏆 Balinarska Liga Lestvice</h1>
-
-    <div id="nalaganje" class="loading">Nalaganje podatkov iz Google Sheets in računanje lestvic...</div>
-
-    <div id="kontejner-liga1" style="display: none;">
-        <h2>🥇 1. Štajerska Liga</h2>
-        <div class="tabela-kontejner">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mesto</th>
-                        <th>Ekipa</th>
-                        <th>Točke</th>
-                        <th>Tekme</th>
-                        <th>Zmage</th>
-                        <th>Izenačene</th>
-                        <th>Porazi</th>
-                    </tr>
-                </thead>
-                <tbody id="body-liga1"></tbody>
-            </table>
+    <div class="sidebar">
+        <h3>Balinanje</h3>
+        <button class="menu-item" onclick="prikaziStran('domov')">Domov</button>
+        <button class="menu-item" onclick="prikaziStran('lestvice')">Lestvice</button>
+        <button class="menu-item" id="gumb-tekme">Tekme ▼</button>
+        <div class="dropdown-container" id="podmeni-tekme">
+            <div onclick="prikaziStran('tekme1')">1. Štajerska Liga</div>
+            <div onclick="prikaziStran('tekme2')">2. Štajerska Liga</div>
         </div>
     </div>
 
-    <div id="kontejner-liga2" style="display: none;">
-        <h2>🥈 2. Štajerska Liga</h2>
-        <div class="tabela-kontejner">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mesto</th>
-                        <th>Ekipa</th>
-                        <th>Točke</th>
-                        <th>Tekme</th>
-                        <th>Zmage</th>
-                        <th>Izenačene</th>
-                        <th>Porazi</th>
-                    </tr>
-                </thead>
-                <tbody id="body-liga2"></tbody>
-            </table>
+    <div class="glavna-vsebina">
+        <div id="status-nalaganja" class="loading">Nalaganje podatkov iz Google Sheets...</div>
+
+        <div id="stran-domov" class="stran">
+            <h1>Domov</h1>
+            <div class="tabela-kontejner">
+                <h2>Dobrodošli na portalu Štajerske Balinarske Lige</h2>
+                <p>Uporabite levi stranski meni za pregled uradnih lestvic ali rezultatov tekem po posameznih krogih v živo.</p>
+            </div>
+        </div>
+
+        <div id="stran-lestvice" class="stran">
+            <h1>🏆 Trenutne Lestvice Lig</h1>
+            
+            <h2>1. Štajerska Liga</h2>
+            <div class="tabela-kontejner">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Mesto</th>
+                            <th rowspan="2" style="vertical-align: middle;">Ekipa</th>
+                            <th rowspan="2" style="vertical-align: middle;">Tekme</th>
+                            <th rowspan="2" style="vertical-align: middle;">Zmage</th>
+                            <th rowspan="2" style="vertical-align: middle;">Izenačene</th>
+                            <th rowspan="2" style="vertical-align: middle;">Porazi</th>
+                            <th rowspan="2" style="vertical-align: middle;">Točke</th>
+                            <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Igre</th>
+                            <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Punti</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-lestvica1"></tbody>
+                </table>
+            </div>
+
+            <h2>2. Štajerska Liga</h2>
+            <div class="tabela-kontejner">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Mesto</th>
+                            <th rowspan="2" style="vertical-align: middle;">Ekipa</th>
+                            <th rowspan="2" style="vertical-align: middle;">Tekme</th>
+                            <th rowspan="2" style="vertical-align: middle;">Zmage</th>
+                            <th rowspan="2" style="vertical-align: middle;">Izenačene</th>
+                            <th rowspan="2" style="vertical-align: middle;">Porazi</th>
+                            <th rowspan="2" style="vertical-align: middle;">Točke</th>
+                            <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Igre</th>
+                            <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Punti</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-lestvica2"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="stran-tekme1" class="stran">
+            <h1>Tekme - 1. Štajerska Liga</h1>
+            <div id="kontejner-tekme1"></div>
+        </div>
+
+        <div id="stran-tekme2" class="stran">
+            <h1>Tekme - 2. Štajerska Liga</h1>
+            <div id="kontejner-tekme2"></div>
         </div>
     </div>
 
     <script>
-        // 1. NASTAVITVE: Vstavi svoj Google Sheet ID
-        const SHEET_ID = '1j4nfdz7D7HGit4N322zcjoNypilPeCyUDXesZV5e3Uw';
-        
-        // Povezavi do obeh listov (Ekipe in Tekme)
-        const URL_EKIPE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Ekipe`;
-        const URL_TEKME = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Tekme`;
+        // Nastavitev gumba za odpiranje podmenija
+        document.getElementById('gumb-tekme').addEventListener('click', function() {
+            document.getElementById('podmeni-tekme').classList.toggle('dropdown-otvoren');
+        });
 
-        async function naloziInIzracunaj() {
-            try {
-                // Klic 1: Pridobimo lige za ekipe
-                const odzivEkipe = await fetch(URL_EKIPE);
-                const tekstEkipe = await odzivEkipe.text();
-                const suroveEkipe = parsajCSV(tekstEkipe);
-
-                // Ustvarimo map (slovar), kjer bo ključ IME EKIPE, vrednost pa LIGA (npr. '1' ali '2')
-                const mapeEkipInLig = {};
-                suroveEkipe.forEach(vrstica => {
-                    // Predpostavljam stolpca "Ime Ekipe" (ali pač "Ekipa") in "Liga" (prilagodi po potrebi)
-                    const ime = vrstica['Ekipe'] || vrstica['Ime Ekipe'] || Object.values(vrstica)[0];
-                    const liga = vrstica['Liga'] || vrstica['liga'] || Object.values(vrstica)[1];
-                    if (ime) {
-                        mapeEkipInLig[ime.trim()] = liga ? liga.trim().toString() : '1';
-                    }
-                });
-
-                // Klic 2: Pridobimo vse tekme
-                const odzivTekme = await fetch(URL_TEKME);
-                const tekstTekme = await odzivTekme.text();
-                const vseTekme = parsajCSV(tekstTekme);
-
-                // Ustvarimo dva ločena objekta za rezultate lig
-                const lestvica1 = {};
-                const lestvica2 = {};
-
-                // Sprehodimo se čez vse tekme
-                vseTekme.forEach(tekma => {
-                    const domaci = tekma['Domaci'];
-                    const gosti = tekma['Gosti'];
-                    
-                    // Preverimo točke (Tocke_D in Tocke_G), ki določajo zmagovalca tekme
-                    const tockeD = parseInt(tekma['Tocke_D']);
-                    const tockeG = parseInt(tekma['Tocke_G']);
-
-                    // KLJUČNO: Če rezultatov ni (prazne celice ali NaN), tekma ni bila odigrana -> jo preskočimo!
-                    if (isNaN(tockeD) || isNaN(tockeG)) return;
-
-                    // Ugotovimo, v kateri ligi igra ta ekipa (pogledamo v najin prvi slovar)
-                    const ligaEkipe = mapeEkipInLig[domaci] || '1'; // Če je ni, damo privzeto v 1. ligo
-                    const trenutnaLestvica = (ligaEkipe === '1' || ligaEkipe.includes('1')) ? lestvica1 : lestvica2;
-
-                    // Inicializacija ekip v objektu, če jih še ni
-                    if (!trenutnaLestvica[domaci]) trenutnaLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izeneceni:0, porazi: 0, tocke: 0 };
-                    if (!trenutnaLestvica[gosti]) trenutnaLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izeneceni:0, porazi: 0, tocke: 0 };
-
-                    // Dodamo odigrano tekmo
-                    trenutnaLestvica[domaci].tekme += 1;
-                    trenutnaLestvica[gosti].tekme += 1;
-
-                    // Izračun točk za lestvico glede na osvojene točke na tekmi
-                    if (tockeD > tockeG) {
-                        trenutnaLestvica[domaci].zmage += 1;
-                        trenutnaLestvica[domaci].tocke += 2; // Zmaga prinese 2 točki
-                        trenutnaLestvica[gosti].porazi += 1;
-                    } else if (tockeG > tockeD) {
-                        trenutnaLestvica[gosti].zmage += 1;
-                        trenutnaLestvica[gosti].tocke += 2;
-                        trenutnaLestvica[domaci].porazi += 1;
-                    } else {
-                        // Remi (če obstaja)
-                        trenutnaLestvica[domaci].tocke += 1;
-                        trenutnaLestvica[gosti].tocke += 1;
-                        trenutnaLestvica[domaci].izeneceni += 1;
-                        trenutnaLestvica[gosti].izeneceni += 1;
-                    }
-                });
-
-                // Pretvorba v polja in sortiranje po točkah
-                const sortirana1 = Object.values(lestvica1).sort((a, b) => b.tocke - a.tocke);
-                const sortirana2 = Object.values(lestvica2).sort((a, b) => b.tocke - a.tocke);
-
-                // Izris v tabeli
-                izrišiLigo(sortirana1, 'body-liga1');
-                izrišiLigo(sortirana2, 'body-liga2');
-
-                // Skrijemo nalaganje in prikažemo obe ligi
-                document.getElementById('nalaganje').style.display = 'none';
-                document.getElementById('kontejner-liga1').style.display = 'block';
-                document.getElementById('kontejner-liga2').style.display = 'block';
-
-            } catch (napaka) {
-                console.error("Prišlo je do napake:", napaka);
-                document.getElementById('nalaganje').innerText = "Napaka pri računanju podatkov. Preveri poimenovanja stolpcev.";
+        // SPA Navigacija: Funkcija za preklapljanje med "stranmi"
+        function prikaziStran(idStrani) {
+            document.querySelectorAll('.stran').forEach(s => s.classList.remove('stran-aktivna'));
+            const izbranaStran = document.getElementById('stran-' + idStrani);
+            if(izbranaStran) {
+                izbranaStran.classList.add('stran-aktivna');
             }
         }
 
-        // Robusten CSV parser, ki pravilno ločuje podatke
+        // --- PODATKOVNA LOGIKA (GOOGLE SHEETS) ---
+        const SHEET_ID = '1j4nfdz7D7HGit4N322zcjoNypilPeCyUDXesZV5e3Uw';
+        const URL_EKIPE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Ekipe`;
+        const URL_TEKME = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Tekme`;
+
+        // Shramba za globalne podatke
+        let mapeEkipInLig = {};
+        let vseTekme = [];
+
+        async function inicializirajAplikacijo() {
+            try {
+                // Prenesemo oba lista hkrati (v ozadju)
+                const [odzivEkipe, odzivTekme] = await Promise.all([fetch(URL_EKIPE), fetch(URL_TEKME)]);
+                const tekstEkipe = await odzivEkipe.text();
+                const tekstTekme = await odzivTekme.text();
+
+                const suroveEkipe = parsajCSV(tekstEkipe);
+                vseTekme = parsajCSV(tekstTekme);
+
+                // Mapiramo ekipe v njihove lige
+                suroveEkipe.forEach(vrstica => {
+                    const ime = vrstica['Ekipe'] || vrstica['Ime Ekipe'] || Object.values(vrstica)[0];
+                    const liga = vrstica['Liga'] || vrstica['liga'] || Object.values(vrstica)[1];
+                    if (ime) mapeEkipInLig[ime.trim()] = liga ? liga.trim().toString() : '1';
+                });
+
+                // Ko so podatki tu, izračunamo lestvice in zgeneriramo tekme
+                generirajLestvice();
+                generirajTekmePoKrogih('1', 'kontejner-tekme1');
+                generirajTekmePoKrogih('2', 'kontejner-tekme2');
+
+                // Skrijemo loading in prikažemo privzeto začetno stran (Domov)
+                document.getElementById('status-nalaganja').style.display = 'none';
+                prikaziStran('domov');
+
+            } catch (napaka) {
+                console.error("Napaka pri nalaganju:", napaka);
+                document.getElementById('status-nalaganja').innerText = "Napaka pri prenosu podatkov. Preveri Google Sheet.";
+            }
+        }
+
+        // --- 1. RAČUNANJE LESTVICE ---
+        function generirajLestvice() {
+            const lestvica1 = {};
+            const lestvica2 = {};
+
+            vseTekme.forEach(tekma => {
+                const domaci = tekma['Domaci'];
+                const gosti = tekma['Gosti'];
+                const tockeD = parseInt(tekma['Tocke_D']);
+                const tockeG = parseInt(tekma['Tocke_G']);
+                
+                const igreD = parseInt(tekma['Igre_D']) || 0;
+                const igreG = parseInt(tekma['Igre_G']) || 0;
+                const puntiD = parseInt(tekma['Punti_D']) || 0;
+                const puntiG = parseInt(tekma['Punti_G']) || 0;
+
+                // Če tekma ni odigrana, je ne štejemo
+                if (isNaN(tockeD) || isNaN(tockeG)) return;
+
+                const liga = mapeEkipInLig[domaci] || '1';
+                const tLestvica = (liga === '1' || liga.includes('1')) ? lestvica1 : lestvica2;
+
+                // Inicializacija strukture z vsemi potrebnimi podatki
+                if (!tLestvica[domaci]) tLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izeneceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
+                if (!tLestvica[gosti]) tLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izeneceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
+
+                tLestvica[domaci].tekme += 1;
+                tLestvica[gosti].tekme += 1;
+
+                // Seštevek podrobnih iger in puntov
+                tLestvica[domaci].igreZ += igreD;
+                tLestvica[domaci].igreIz += igreG;
+                tLestvica[gosti].igreZ += igreG;
+                tLestvica[gosti].igreIz += igreD;
+
+                tLestvica[domaci].puntiZ += puntiD;
+                tLestvica[domaci].puntiIz += puntiG;
+                tLestvica[gosti].puntiZ += puntiG;
+                tLestvica[gosti].puntiIz += puntiD;
+
+                // Točke in statistika zmag/remijev/porazov celotnih tekem
+                if (tockeD > tockeG) {
+                    tLestvica[domaci].zmage += 1; 
+                    tLestvica[domaci].tocke += 2;
+                    tLestvica[gosti].porazi += 1;
+                } else if (tockeG > tockeD) {
+                    tLestvica[gosti].zmage += 1; 
+                    tLestvica[gosti].tocke += 2;
+                    tLestvica[domaci].porazi += 1;
+                } else {
+                    tLestvica[domaci].izeneceni += 1;
+                    tLestvica[gosti].izeneceni += 1;
+                    tLestvica[domaci].tocke += 1; 
+                    tLestvica[gosti].tocke += 1;
+                }
+            });
+
+            // Razvrščanje: Točke -> Razlika v igrah -> Razlika v puntih
+            const sortirajLigo = (lista) => Object.values(lista).sort((a, b) => {
+                if (b.tocke !== a.tocke) return b.tocke - a.tocke;
+                const razlikaIgerA = a.igreZ - a.igreIz;
+                const razlikaIgerB = b.igreZ - b.igreIz;
+                if (razlikaIgerB !== razlikaIgerA) return razlikaIgerB - razlikaIgerA;
+                return (b.puntiZ - b.puntiIz) - (a.puntiZ - a.puntiIz);
+            });
+
+            izrisiLestvicoHTML(sortirajLigo(lestvica1), 'body-lestvica1');
+            izrisiLestvicoHTML(sortirajLigo(lestvica2), 'body-lestvica2');
+        }
+
+        function izrisiLestvicoHTML(podatki, elementId) {
+            const tbody = document.getElementById(elementId);
+            tbody.innerHTML = podatki.map((ekipa, i) => {
+                const igreR = ekipa.igreZ - ekipa.igreIz;
+                const puntiR = ekipa.puntiZ - ekipa.puntiIz;
+                
+                const prikazIgreR = igreR > 0 ? `+${igreR}` : igreR;
+                const prikazPuntiR = puntiR > 0 ? `+${puntiR}` : puntiR;
+
+                return `
+                    <tr>
+                        <td><strong>${i + 1}.</strong></td>
+                        <td>${ekipa.ime}</td>
+                        <td>${ekipa.tekme}</td>
+                        <td>${ekipa.zmage}</td>
+                        <td>${ekipa.izeneceni}</td>
+                        <td>${ekipa.porazi}</td>
+                        <td><strong>${ekipa.tocke}</strong></td>
+                        <td>${ekipa.igreZ}</td>
+                        <td>${ekipa.igreIz}</td>
+                        <td style="font-weight: 600; color: ${igreR >= 0 ? '#1eb909' : '#b90909'}">${prikazIgreR}</td>
+                        <td>${ekipa.puntiZ}</td>
+                        <td>${ekipa.puntiIz}</td>
+                        <td style="font-weight: 600; color: ${puntiR >= 0 ? '#1eb909' : '#b90909'}">${prikazPuntiR}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- 2. GENERIRANJE TEKEM PO KROGIH ---
+        function generirajTekmePoKrogih(targetLiga, kontejnerId) {
+            const kontejner = document.getElementById(kontejnerId);
+            kontejner.innerHTML = '';
+
+            // Filtriramo tekme samo za želeno ligo na podlagi domače ekipe
+            const ligaTekme = vseTekme.filter(t => {
+                const l = mapeEkipInLig[t['Domaci']] || '1';
+                return targetLiga === '1' ? (l === '1' || l.includes('1')) : (l === '2' || l.includes('2'));
+            });
+
+            // Ugotovimo vse edinstvene kroge objave (stolpec 'Objava') in jih sortiramo številčno
+            const krogiObjave = [...new Set(ligaTekme.map(t => parseInt(t['Objava'])).filter(k => !isNaN(k)))].sort((a,b) => a - b);
+
+            if(krogiObjave.length === 0) {
+                kontejner.innerHTML = '<p style="text-align:center; font-style:italic;">Ni podatkov o tekmah za to ligo.</p>';
+                return;
+            }
+
+            krogiObjave.forEach(krogObjava => {
+                // 1. Glavne redne tekme (kjer se Krog ujema z Objava)
+                const redneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) === krogObjava);
+                // 2. Prestavljene tekme (kjer se Krog NE ujema z Objava)
+                const prestavljeneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) !== krogObjava);
+
+                let krogHTML = `<h3 class="naslov-kroga">Krog ${krogObjava}</h3>`;
+
+                // Izris glavne tabele za ta krog
+                krogHTML += `<div class="tabela-kontejner"><table>
+                    <thead><tr><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
+                    <tbody>`;
+                
+                if(redneTekme.length > 0) {
+                    redneTekme.forEach(t => { krogHTML += ustvariVrsticoTekme(t); });
+                } else {
+                    krogHTML += `<tr><td colspan="4" style="text-align:center; color:#999;">V tem krogu ni bilo rednih tekem.</td></tr>`;
+                }
+                krogHTML += `</tbody></table></div>`;
+
+                // Izris pomožne ločene tabelice za prestavljene/vnaprejšnje tekme
+                if(prestavljeneTekme.length > 0) {
+                    krogHTML += `<div class="tabela-Mala">
+                        <h4 class="naslov-prestavljene">Tekme iz drugih krogov, objavljene v ${krogObjava}. krogu:</h4>
+                        <table>
+                        <thead><tr><th>Dejanski Krog</th><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
+                        <tbody>`;
+                    prestavljeneTekme.forEach(t => {
+                        krogHTML += ustvariVrsticoTekme(t, true);
+                    });
+                    krogHTML += `</tbody></table></div>`;
+                }
+
+                kontejner.innerHTML += krogHTML;
+            });
+        }
+
+        // Pomožna funkcija, ki sestavi vrstico za posamezno tekmo
+        function ustvariVrsticoTekme(t, vkljuciDejanskiKrog = false) {
+            const tockeD = t['Tocke_D'] ? t['Tocke_D'].trim() : '';
+            const tockeG = t['Tocke_G'] ? t['Tocke_G'].trim() : '';
+            const puntiD = t['Punti_D'] ? t['Punti_D'].trim() : '';
+            const puntiG = t['Punti_G'] ? t['Punti_G'].trim() : '';
+
+            // Če so točke prazne, prikažemo prazen prostor namesto rezultata
+            const izpisRezultata = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '  :  ';
+            const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `${puntiD} : ${puntiG}` : '  :  ';
+            const dejanskiKrogStolpec = vkljuciDejanskiKrog ? `<td><strong>Krog ${t['Krog']}</strong></td>` : '';
+
+            return `<tr>
+                ${dejanskiKrogStolpec}
+                <td>${t['Domaci']}</td>
+                <td>${t['Gosti']}</td>
+                <td style="text-align:center"><span class="rezultat">${izpisRezultata}</span></td>
+                <td style="text-align:center; color:#666; font-size:0.9rem;">${izpisPuntov}</td>
+            </tr>`;
+        }
+
+        // Robusten parser CSV-ja
         function parsajCSV(tekst) {
             const vrstice = tekst.split('\n');
             if (vrstice.length === 0) return [];
-            
             const glava = vrstice[0].split(',').map(h => h.replace(/"/g, '').trim());
             const podatki = [];
-
             for (let i = 1; i < vrstice.length; i++) {
                 if (!vrstice[i].trim()) continue;
                 const celice = vrstice[i].split(',').map(c => c.replace(/"/g, '').trim());
                 const objekt = {};
-                glava.forEach((naslov, indeks) => {
-                    objekt[naslov] = celice[indeks];
-                });
+                glava.forEach((naslov, indeks) => { objekt[naslov] = celice[indeks]; });
                 podatki.push(objekt);
             }
             return podatki;
         }
 
-        // Funkcija za izris posamezne lige v HTML
-        function izrišiLigo(podatkiLige, elementId) {
-            const tbody = document.getElementById(elementId);
-            tbody.innerHTML = '';
-
-            if (podatkiLige.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; font-style:italic;">Ni odigranih tekem v tej ligi.</td></tr>`;
-                return;
-            }
-
-            podatkiLige.forEach((ekipa, indeks) => {
-                const vrstica = `
-                    <tr>
-                        <td><strong>${indeks + 1}.</strong></td>
-                        <td>${ekipa.ime}</td>
-                        <td><strong>${ekipa.tocke}</strong></td>
-                        <td>${ekipa.tekme}</td>
-                        <td>${ekipa.zmage}</td>
-                        <td>${ekipa.izeneceni}</td>
-                        <td>${ekipa.porazi}</td>
-                    </tr>
-                `;
-                tbody.innerHTML += vrstica;
-            });
-        }
-
-        // Zagon
-        naloziInIzracunaj();
+        // Zaženemo aplikacijo ob nalaganju strani
+        inicializirajAplikacijo();
     </script>
 </body>
 </html>
