@@ -31,9 +31,10 @@
                         <th>Mesto</th>
                         <th>Ekipa</th>
                         <th>Točke</th>
-                        <th>Zmage</th>
-                        <th>Porazi</th>
                         <th>Tekme</th>
+                        <th>Zmage</th>
+                        <th>Izenačene</th>
+                        <th>Porazi</th>
                     </tr>
                 </thead>
                 <tbody id="body-liga1"></tbody>
@@ -52,6 +53,7 @@
                         <th>Točke</th>
                         <th>Tekme</th>
                         <th>Zmage</th>
+                        <th>Izenačene</th>
                         <th>Porazi</th>
                     </tr>
                 </thead>
@@ -112,8 +114,8 @@
                     const trenutnaLestvica = (ligaEkipe === '1' || ligaEkipe.includes('1')) ? lestvica1 : lestvica2;
 
                     // Inicializacija ekip v objektu, če jih še ni
-                    if (!trenutnaLestvica[domaci]) trenutnaLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, porazi: 0, tocke: 0 };
-                    if (!trenutnaLestvica[gosti]) trenutnaLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, porazi: 0, tocke: 0 };
+                    if (!trenutnaLestvica[domaci]) trenutnaLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izeneceni:0, porazi: 0, tocke: 0 };
+                    if (!trenutnaLestvica[gosti]) trenutnaLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izeneceni:0, porazi: 0, tocke: 0 };
 
                     // Dodamo odigrano tekmo
                     trenutnaLestvica[domaci].tekme += 1;
@@ -132,6 +134,8 @@
                         // Remi (če obstaja)
                         trenutnaLestvica[domaci].tocke += 1;
                         trenutnaLestvica[gosti].tocke += 1;
+                        trenutnaLestvica[domaci].izeneceni += 1;
+                        trenutnaLestvica[gosti].izeneceni += 1;
                     }
                 });
 
@@ -192,6 +196,7 @@
                         <td><strong>${ekipa.tocke}</strong></td>
                         <td>${ekipa.tekme}</td>
                         <td>${ekipa.zmage}</td>
+                        <td>${ekipa.izeneceni}</td>
                         <td>${ekipa.porazi}</td>
                     </tr>
                 `;
