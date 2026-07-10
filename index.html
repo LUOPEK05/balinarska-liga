@@ -18,13 +18,13 @@
         .sidebar {
             width: 250px;
             height: 100vh;
-            background-color: #1e3a8a;
+            background-color: #b7d209;
             color: white;
             position: fixed;
             top: 0;
             left: 0;
             padding-top: 20px;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 10px #596505;
             box-sizing: border-box;
             z-index: 100;
         }
@@ -32,7 +32,21 @@
         .sidebar h3 {
             text-align: center;
             margin-bottom: 30px;
-            color: #38bdf8;
+            color: #ffffff;
+        }
+
+        .logo-kontejner {
+            text-align: center;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar-logo {
+            max-width: 100%;  /* Logotip se bo avtomatsko pomanjšal na širino menija */
+            height: auto;     /* Ohrani pravilno razmerje višine in širine */
+            max-height: 120px; /* Omejitev maksimalne višine, da ne zasede pol ekrana */
+            object-fit: contain;
         }
 
         .menu-item {
@@ -52,7 +66,7 @@
         }
 
         .menu-item:hover {
-            background-color: #1e40af;
+            background-color: #596505;
             color: white;
         }
 
@@ -60,14 +74,14 @@
         .dropdown-container {
             max-height: 0;
             overflow: hidden;
-            background-color: #172554;
+            background-color: #596505;
             transition: max-height 0.3s ease-out;
         }
 
         .dropdown-container div {
             display: block;
             padding: 12px 40px;
-            color: #cbd5e1;
+            color: #ffffff;
             text-decoration: none;
             font-size: 0.95rem;
             cursor: pointer;
@@ -75,7 +89,7 @@
         }
 
         .dropdown-container div:hover {
-            color: #38bdf8;
+            color: #000000;
         }
 
         .dropdown-otvoren {
@@ -99,7 +113,7 @@
         }
 
         /* --- STILI ZA TABELE & KROGE --- */
-        h1 { text-align: center; color: #1eb909; margin-bottom: 30px; }
+        h1 { text-align: center; color: #b7d209; margin-bottom: 30px; }
         h2 { color: #b90909; border-bottom: 2px solid #b90909; padding-bottom: 8px; max-width: 900px; margin: 40px auto 20px auto; }
         h3.naslov-kroga { color: #1e3a8a; background: #e0f2fe; padding: 10px 15px; border-radius: 5px; max-width: 900px; margin: 30px auto 10px auto; }
         h4.naslov-prestavljene { color: #b45309; margin: 15px auto 5px auto; max-width: 900px; font-style: italic; font-size: 0.95rem;}
@@ -109,7 +123,7 @@
         
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: center; }
-        th { background-color: #1eb909; color: white; font-weight: 600; }
+        th { background-color: #b7d209; color: white; font-weight: 600; }
         .tabela-Mala th { background-color: #b45309; }
         tr:hover { background-color: #f1f5f9; }
         
@@ -123,7 +137,9 @@
 <body>
 
     <div class="sidebar">
-        <h3>Balinanje</h3>
+        <div class="logo-kontejner">
+            <img src="recourses\ŠLUB_logo.png" alt="Štajerska Balinarska Liga" class="sidebar-logo">
+        </div>
         <button class="menu-item" onclick="prikaziStran('domov')">Domov</button>
         <button class="menu-item" onclick="prikaziStran('lestvice')">Lestvice</button>
         <button class="menu-item" id="gumb-tekme">Tekme ▼</button>
