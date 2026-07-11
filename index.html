@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Štajerska Balinarska Liga</title>
+    <title>ŠLUB - Štajerska liga upokojencev balinanje | Uradna stran</title>
+    <meta name="description" content="Uradna spletna stran Štajerske lige upokojencev v balinanju (ŠLUB). Preglejte najnovejše rezultate, lestvice ekip in razpored prihodnjih tekem.">
+    <meta name="keywords" content="ŠLUB, štajerska liga upokojencev balinanje, balinarska liga Štajerska, balinanje upokojenci, lestvica balinanje">
+    
     <style>
         /* --- BAZIČNI STILI & POSTAVITEV (SPA) --- */
         body {
@@ -27,12 +30,6 @@
             box-shadow: 4px 0 10px #596505;
             box-sizing: border-box;
             z-index: 100;
-        }
-
-        .sidebar h3 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #ffffff;
         }
 
         .logo-kontejner {
@@ -153,9 +150,8 @@
         <div id="status-nalaganja" class="loading">Nalaganje podatkov iz Google Sheets...</div>
 
         <div id="stran-domov" class="stran">
-            <h1>Domov</h1>
+            <h1>Dobrodošli</h1>
             <div class="tabela-kontejner">
-                <h2>Dobrodošli na portalu Štajerske Balinarske Lige</h2>
                 <p>Uporabite levi stranski meni za pregled uradnih lestvic ali rezultatov tekem po posameznih krogih v živo.</p>
             </div>
         </div>
@@ -310,8 +306,8 @@
                 const tLestvica = (liga === '1' || liga.includes('1')) ? lestvica1 : lestvica2;
 
                 // Inicializacija strukture z vsemi potrebnimi podatki
-                if (!tLestvica[domaci]) tLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izeneceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
-                if (!tLestvica[gosti]) tLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izeneceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
+                if (!tLestvica[domaci]) tLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izanaceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
+                if (!tLestvica[gosti]) tLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izanaceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
 
                 tLestvica[domaci].tekme += 1;
                 tLestvica[gosti].tekme += 1;
@@ -337,8 +333,8 @@
                     tLestvica[gosti].tocke += 2;
                     tLestvica[domaci].porazi += 1;
                 } else {
-                    tLestvica[domaci].izeneceni += 1;
-                    tLestvica[gosti].izeneceni += 1;
+                    tLestvica[domaci].izanaceni += 1;
+                    tLestvica[gosti].izanaceni += 1;
                     tLestvica[domaci].tocke += 1; 
                     tLestvica[gosti].tocke += 1;
                 }
@@ -372,7 +368,7 @@
                         <td>${ekipa.ime}</td>
                         <td>${ekipa.tekme}</td>
                         <td>${ekipa.zmage}</td>
-                        <td>${ekipa.izeneceni}</td>
+                        <td>${ekipa.izanaceni}</td>
                         <td>${ekipa.porazi}</td>
                         <td><strong>${ekipa.tocke}</strong></td>
                         <td>${ekipa.igreZ}</td>
