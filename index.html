@@ -202,9 +202,9 @@
         .loading { text-align: center; font-style: italic; color: #666; margin-top: 100px; font-size: 1.2rem; }
         .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
 
-        /* --- STICKY STOLPCI --- */
+        /* --- STICKY STOLPCI (Samo za lestvice) --- */
         #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
-        .stran-aktivna table thead th:nth-child(2) {
+        #stran-lestvice table thead th:nth-child(2) {
             position: -webkit-sticky;
             position: sticky;
             left: 0;
@@ -213,7 +213,8 @@
             text-align: left;
             box-shadow: 2px 0 5px rgba(0,0,0,0.05);
         }
-        .stran-aktivna table thead th:nth-child(2) {
+
+        #stran-lestvice table thead th:nth-child(2) {
             background-color: #b7d209;
             z-index: 11;
         }
