@@ -202,18 +202,37 @@
         .loading { text-align: center; font-style: italic; color: #666; margin-top: 100px; font-size: 1.2rem; }
         .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
 
-        /* PRAVILNO: Sticka prvi stolpec SAMO na strani z lestvicami */
-        #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
-        #stran-lestvice table thead th:nth-child(2) {
+        /* --- STICKY ZA PRVI STOLPEC (Mesto) --- */
+        #body-lestvica1 td:nth-child(1), #body-lestvica2 td:nth-child(1),
+        #stran-lestvice table thead tr:first-child th:nth-child(1) {
             position: -webkit-sticky;
             position: sticky;
             left: 0;
-            background-color: white; /* oziroma barva, ki jo želiš */
+            background-color: #ffffff;
             z-index: 10;
         }
 
-        #stran-lestvice table thead th:nth-child(2) {
-            background-color: #b7d209; /* CSS barva za glavo tabele lestvice */
+        /* Glava prvega stolpca (Mesto) dobi zeleno ozadje */
+        #stran-lestvice table thead tr:first-child th:nth-child(1) {
+            background-color: #b7d209;
+            z-index: 11;
+        }
+
+        /* --- STICKY ZA DRUGI STOLPEC (Ekipa) --- */
+        /* left: 70px; premakne ekipo v desno, da ne prekrije mesta. 
+        Odmik prilagodi glede na to, kako širok je tvoj prvi stolpec. */
+        #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
+        #stran-lestvice table thead tr:first-child th:nth-child(2) {
+            position: -webkit-sticky;
+            position: sticky;
+            left: 70px; 
+            background-color: #ffffff;
+            z-index: 10;
+        }
+
+        /* Glava drugega stolpca (Ekipa) dobi zeleno ozadje */
+        #stran-lestvice table thead tr:first-child th:nth-child(2) {
+            background-color: #b7d209;
             z-index: 11;
         }
 
