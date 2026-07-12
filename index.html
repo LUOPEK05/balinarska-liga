@@ -202,20 +202,18 @@
         .loading { text-align: center; font-style: italic; color: #666; margin-top: 100px; font-size: 1.2rem; }
         .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
 
-        /* --- STICKY STOLPCI (Samo za lestvice) --- */
+        /* PRAVILNO: Sticka prvi stolpec SAMO na strani z lestvicami */
         #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
         #stran-lestvice table thead th:nth-child(2) {
             position: -webkit-sticky;
             position: sticky;
             left: 0;
-            background-color: white;
+            background-color: white; /* oziroma barva, ki jo želiš */
             z-index: 10;
-            text-align: left;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
         }
 
         #stran-lestvice table thead th:nth-child(2) {
-            background-color: #b7d209;
+            background-color: #b7d209; /* CSS barva za glavo tabele lestvice */
             z-index: 11;
         }
 
