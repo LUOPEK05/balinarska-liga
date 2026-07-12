@@ -14,7 +14,53 @@
             margin: 0;
             background-color: #f8f9fa;
             display: flex;
+            flex-direction: column;
             color: #333;
+        }
+
+        /* --- MOBILNA GLAVNA VRSTICA (Zgoraj) --- */
+        .mobilna-glava {
+            display: none;
+            background-color: #b7d209;
+            color: white;
+            padding: 10px 20px;
+            justify-content: flex-start; /* Poravnava na levo zaradi hamburgerja */
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 200;
+            box-sizing: border-box;
+            gap: 20px; /* Razmak med hamburgerjem in naslovom */
+        }
+
+        .mobilna-glava .naslov-strani {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Gumb za hamburger s tremi črticami na levi */
+        .hamburger-gumb {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 24px;
+            padding: 0;
+        }
+
+        .hamburger-gumb span {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
         /* --- STRANSKI MENI (SIDEBAR) --- */
@@ -29,7 +75,13 @@
             padding-top: 20px;
             box-shadow: 4px 0 10px #596505;
             box-sizing: border-box;
-            z-index: 100;
+            z-index: 150;
+            transition: transform 0.3s ease;
+            
+            /* Centriranje vseh elementov znotraj sidebarka */
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
         }
 
         .logo-kontejner {
@@ -37,12 +89,15 @@
             padding: 10px 20px;
             margin-bottom: 20px;
             box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .sidebar-logo {
-            max-width: 100%;  /* Logotip se bo avtomatsko pomanjšal na širino menija */
-            height: auto;     /* Ohrani pravilno razmerje višine in širine */
-            max-height: 120px; /* Omejitev maksimalne višine, da ne zasede pol ekrana */
+            max-width: 100%;
+            height: auto;
+            max-height: 120px;
             object-fit: contain;
         }
 
@@ -57,7 +112,7 @@
             border: none;
             background: none;
             width: 100%;
-            text-align: left;
+            text-align: center; /* Centrirano besedilo glavnih gumbov */
             font-size: 1rem;
             box-sizing: border-box;
         }
@@ -73,16 +128,18 @@
             overflow: hidden;
             background-color: #596505;
             transition: max-height 0.3s ease-out;
+            width: 100%; /* Da se barva ozadja podmenija raztegne čez celo širino */
         }
 
         .dropdown-container div {
             display: block;
-            padding: 12px 40px;
+            padding: 12px 20px;
             color: #ffffff;
             text-decoration: none;
             font-size: 0.95rem;
             cursor: pointer;
             transition: color 0.2s;
+            text-align: center; /* Centrirano besedilo v podmeniju */
         }
 
         .dropdown-container div:hover {
@@ -99,11 +156,12 @@
             padding: 40px;
             width: calc(100% - 250px);
             box-sizing: border-box;
+            min-height: 100vh;
         }
 
         /* --- STRANI (POGLEDI) --- */
         .stran {
-            display: none; /* Privzeto skrijemo vse, JS bo prikazal izbrano */
+            display: none;
         }
         .stran-aktivna {
             display: block !important;
@@ -115,34 +173,118 @@
         h3.naslov-kroga { color: #1e3a8a; background: #e0f2fe; padding: 10px 15px; border-radius: 5px; max-width: 900px; margin: 30px auto 10px auto; }
         h4.naslov-prestavljene { color: #b45309; margin: 15px auto 5px auto; max-width: 900px; font-style: italic; font-size: 0.95rem;}
         
-        .tabela-kontejner { overflow-x: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 900px; margin: 0 auto 20px auto; box-sizing: border-box;}
-        .tabela-Mala { max-width: 900px; margin: 0 auto 30px auto; border: 1px dashed #b45309; padding: 10px; border-radius: 8px; background: #fffbef;}
+        .tabela-kontejner { 
+            overflow-x: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            max-width: 900px; 
+            margin: 0 auto 20px auto; 
+            box-sizing: border-box;
+        }
+        .tabela-Mala { 
+            max-width: 900px; 
+            margin: 0 auto 30px auto; 
+            border: 1px dashed #b45309; 
+            padding: 10px; 
+            border-radius: 8px; 
+            background: #fffbef;
+            overflow-x: auto;
+        }
         
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: center; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: center; white-space: nowrap; }
         th { background-color: #b7d209; color: white; font-weight: 600; }
         .tabela-Mala th { background-color: #b45309; }
         tr:hover { background-color: #f1f5f9; }
         
-        .loading { text-align: center; font-style: italic; color: #666; margin-top: 50px; font-size: 1.2rem; }
+        .loading { text-align: center; font-style: italic; color: #666; margin-top: 100px; font-size: 1.2rem; }
         .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
+
+        /* --- STICKY STOLPCI --- */
+        #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
+        .stran-aktivna table thead th:nth-child(2) {
+            position: -webkit-sticky;
+            position: sticky;
+            left: 0;
+            background-color: white;
+            z-index: 10;
+            text-align: left;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+        .stran-aktivna table thead th:nth-child(2) {
+            background-color: #b7d209;
+            z-index: 11;
+        }
+
         
-        /* Centriranje vseh stolpcev razen imena ekipe na lestvici */
-        th:nth-child(2), td:nth-child(2) { text-align: left; }
+
+        tr:hover td {
+            background-color: #f1f5f9 !important;
+        }
+
+        /* --- ODZIVNOST (RESPONSIVENESS) --- */
+        @media (max-width: 768px) {
+            .mobilna-glava {
+                display: flex;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                top: 60px;
+                height: calc(100vh - 60px);
+                width: auto; /* Avtomatska širina glede na vsebino */
+                min-width: 200px; /* Minimalna širina, da ne izgleda preozko pri kratkih besedilih */
+                max-width: 280px; /* Maksimalna meja, da ne skoči čez pol ekrana */
+                padding-right: 15px; /* Nekaj malega odmika na robovih */
+                padding-left: 15px;
+            }
+            .sidebar-odprta {
+                transform: translateX(0);
+            }
+            .glavna-vsebina {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 10px;
+                margin-top: 60px;
+            }
+
+            /* Hamburger animacija */
+            .hamburger-gumb.aktivno span:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+            .hamburger-gumb.aktivno span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger-gumb.aktivno span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
+    <!-- Glava s hamburger gumbom na LEVI strani -->
+    <div class="mobilna-glava">
+        <button class="hamburger-gumb" id="hamburger-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <span class="naslov-strani">ŠLUB Balinanje</span>
+    </div>
+
+    <!-- Stranski meni z avtomatsko širino in centriranimi elementi -->
+    <div class="sidebar" id="stranski-meni">
         <div class="logo-kontejner">
             <img src="recourses/ŠLUB_logo.png" alt="Štajerska Balinarska Liga" class="sidebar-logo">
         </div>
-        <button class="menu-item" onclick="prikaziStran('domov')">Domov</button>
-        <button class="menu-item" onclick="prikaziStran('lestvice')">Lestvice</button>
+        <button class="menu-item" onclick="navigacija('domov')">Domov</button>
+        <button class="menu-item" onclick="navigacija('lestvice')">Lestvice</button>
         <button class="menu-item" id="gumb-tekme">Tekme ▼</button>
         <div class="dropdown-container" id="podmeni-tekme">
-            <div onclick="prikaziStran('tekme1')">1. Štajerska Liga</div>
-            <div onclick="prikaziStran('tekme2')">2. Štajerska Liga</div>
+            <div onclick="navigacija('tekme1')">1. Štajerska Liga</div>
+            <div onclick="navigacija('tekme2')">2. Štajerska Liga</div>
         </div>
     </div>
 
@@ -152,7 +294,7 @@
         <div id="stran-domov" class="stran">
             <h1>Dobrodošli</h1>
             <div class="tabela-kontejner">
-                <p>Uporabite levi stranski meni za pregled uradnih lestvic ali rezultatov tekem po posameznih krogih v živo.</p>
+                <p style="text-align: center;">Uporabite stranski meni za pregled uradnih lestvic ali rezultatov tekem po posameznih krogih v živo.</p>
             </div>
         </div>
 
@@ -228,12 +370,27 @@
     </div>
 
     <script>
-        // Nastavitev gumba za odpiranje podmenija
+        // --- UPRAVLJANJE MENIJA (Hamburger & Dropdown) ---
+        const hamburgerToggle = document.getElementById('hamburger-toggle');
+        const stranskiMeni = document.getElementById('stranski-meni');
+
+        hamburgerToggle.addEventListener('click', function() {
+            stranskiMeni.classList.toggle('sidebar-odprta');
+            hamburgerToggle.classList.toggle('aktivno');
+        });
+
         document.getElementById('gumb-tekme').addEventListener('click', function() {
             document.getElementById('podmeni-tekme').classList.toggle('dropdown-otvoren');
         });
 
-        // SPA Navigacija: Funkcija za preklapljanje med "stranmi"
+        // SPA Navigacijska funkcija, ki hkrati zapre mobilni meni ob izbiri
+        function navigacija(idStrani) {
+            prikaziStran(idStrani);
+            stranskiMeni.classList.remove('sidebar-odprta');
+            hamburgerToggle.classList.remove('aktivno');
+            window.scrollTo({ top: 0});
+        }
+
         function prikaziStran(idStrani) {
             document.querySelectorAll('.stran').forEach(s => s.classList.remove('stran-aktivna'));
             const izbranaStran = document.getElementById('stran-' + idStrani);
@@ -247,13 +404,11 @@
         const URL_EKIPE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Ekipe`;
         const URL_TEKME = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Tekme`;
 
-        // Shramba za globalne podatke
         let mapeEkipInLig = {};
         let vseTekme = [];
 
         async function inicializirajAplikacijo() {
             try {
-                // Prenesemo oba lista hkrati (v ozadju)
                 const [odzivEkipe, odzivTekme] = await Promise.all([fetch(URL_EKIPE), fetch(URL_TEKME)]);
                 const tekstEkipe = await odzivEkipe.text();
                 const tekstTekme = await odzivTekme.text();
@@ -261,19 +416,16 @@
                 const suroveEkipe = parsajCSV(tekstEkipe);
                 vseTekme = parsajCSV(tekstTekme);
 
-                // Mapiramo ekipe v njihove lige
                 suroveEkipe.forEach(vrstica => {
                     const ime = vrstica['Ekipe'] || vrstica['Ime Ekipe'] || Object.values(vrstica)[0];
                     const liga = vrstica['Liga'] || vrstica['liga'] || Object.values(vrstica)[1];
                     if (ime) mapeEkipInLig[ime.trim()] = liga ? liga.trim().toString() : '1';
                 });
 
-                // Ko so podatki tu, izračunamo lestvice in zgeneriramo tekme
                 generirajLestvice();
                 generirajTekmePoKrogih('1', 'kontejner-tekme1');
                 generirajTekmePoKrogih('2', 'kontejner-tekme2');
 
-                // Skrijemo loading in prikažemo privzeto začetno stran (Domov)
                 document.getElementById('status-nalaganja').style.display = 'none';
                 prikaziStran('domov');
 
@@ -283,7 +435,7 @@
             }
         }
 
-        // --- 1. RAČUNANJE LESTVICE ---
+        // --- RAČUNANJE LESTVICE ---
         function generirajLestvice() {
             const lestvica1 = {};
             const lestvica2 = {};
@@ -299,20 +451,17 @@
                 const puntiD = parseInt(tekma['Punti_D']) || 0;
                 const puntiG = parseInt(tekma['Punti_G']) || 0;
 
-                // Če tekma ni odigrana, je ne štejemo
                 if (isNaN(tockeD) || isNaN(tockeG)) return;
 
                 const liga = mapeEkipInLig[domaci] || '1';
                 const tLestvica = (liga === '1' || liga.includes('1')) ? lestvica1 : lestvica2;
 
-                // Inicializacija strukture z vsemi potrebnimi podatki
                 if (!tLestvica[domaci]) tLestvica[domaci] = { ime: domaci, tekme: 0, zmage: 0, izanaceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
                 if (!tLestvica[gosti]) tLestvica[gosti] = { ime: gosti, tekme: 0, zmage: 0, izanaceni: 0, porazi: 0, tocke: 0, igreZ: 0, igreIz: 0, puntiZ: 0, puntiIz: 0 };
 
                 tLestvica[domaci].tekme += 1;
                 tLestvica[gosti].tekme += 1;
 
-                // Seštevek podrobnih iger in puntov
                 tLestvica[domaci].igreZ += igreD;
                 tLestvica[domaci].igreIz += igreG;
                 tLestvica[gosti].igreZ += igreG;
@@ -323,7 +472,6 @@
                 tLestvica[gosti].puntiZ += puntiG;
                 tLestvica[gosti].puntiIz += puntiD;
 
-                // Točke in statistika zmag/remijev/porazov celotnih tekem
                 if (tockeD > tockeG) {
                     tLestvica[domaci].zmage += 1; 
                     tLestvica[domaci].tocke += 2;
@@ -340,7 +488,6 @@
                 }
             });
 
-            // Razvrščanje: Točke -> Razlika v igrah -> Razlika v puntih
             const sortirajLigo = (lista) => Object.values(lista).sort((a, b) => {
                 if (b.tocke !== a.tocke) return b.tocke - a.tocke;
                 const razlikaIgerA = a.igreZ - a.igreIz;
@@ -382,18 +529,16 @@
             }).join('');
         }
 
-        // --- 2. GENERIRANJE TEKEM PO KROGIH ---
+        // --- GENERIRANJE TEKEM PO KROGIH ---
         function generirajTekmePoKrogih(targetLiga, kontejnerId) {
             const kontejner = document.getElementById(kontejnerId);
             kontejner.innerHTML = '';
 
-            // Filtriramo tekme samo za želeno ligo na podlagi domače ekipe
             const ligaTekme = vseTekme.filter(t => {
                 const l = mapeEkipInLig[t['Domaci']] || '1';
                 return targetLiga === '1' ? (l === '1' || l.includes('1')) : (l === '2' || l.includes('2'));
             });
 
-            // Ugotovimo vse edinstvene kroge objave (stolpec 'Objava') in jih sortiramo številčno
             const krogiObjave = [...new Set(ligaTekme.map(t => parseInt(t['Objava'])).filter(k => !isNaN(k)))].sort((a,b) => a - b);
 
             if(krogiObjave.length === 0) {
@@ -402,14 +547,11 @@
             }
 
             krogiObjave.forEach(krogObjava => {
-                // 1. Glavne redne tekme (kjer se Krog ujema z Objava)
                 const redneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) === krogObjava);
-                // 2. Prestavljene tekme (kjer se Krog NE ujema z Objava)
                 const prestavljeneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) !== krogObjava);
 
                 let krogHTML = `<h3 class="naslov-kroga">Krog ${krogObjava}</h3>`;
 
-                // Izris glavne tabele za ta krog
                 krogHTML += `<div class="tabela-kontejner"><table>
                     <thead><tr><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
                     <tbody>`;
@@ -421,7 +563,6 @@
                 }
                 krogHTML += `</tbody></table></div>`;
 
-                // Izris pomožne ločene tabelice za prestavljene/vnaprejšnje tekme
                 if(prestavljeneTekme.length > 0) {
                     krogHTML += `<div class="tabela-Mala">
                         <h4 class="naslov-prestavljene">Tekme iz drugih krogov, objavljene v ${krogObjava}. krogu:</h4>
@@ -438,14 +579,12 @@
             });
         }
 
-        // Pomožna funkcija, ki sestavi vrstico za posamezno tekmo
         function ustvariVrsticoTekme(t, vkljuciDejanskiKrog = false) {
             const tockeD = t['Tocke_D'] ? t['Tocke_D'].trim() : '';
             const tockeG = t['Tocke_G'] ? t['Tocke_G'].trim() : '';
             const puntiD = t['Punti_D'] ? t['Punti_D'].trim() : '';
             const puntiG = t['Punti_G'] ? t['Punti_G'].trim() : '';
 
-            // Če so točke prazne, prikažemo prazen prostor namesto rezultata
             const izpisRezultata = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '  :  ';
             const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `${puntiD} : ${puntiG}` : '  :  ';
             const dejanskiKrogStolpec = vkljuciDejanskiKrog ? `<td><strong>Krog ${t['Krog']}</strong></td>` : '';
@@ -459,7 +598,6 @@
             </tr>`;
         }
 
-        // Robusten parser CSV-ja
         function parsajCSV(tekst) {
             const vrstice = tekst.split('\n');
             if (vrstice.length === 0) return [];
@@ -475,7 +613,6 @@
             return podatki;
         }
 
-        // Zaženemo aplikacijo ob nalaganju strani
         inicializirajAplikacijo();
     </script>
 </body>
