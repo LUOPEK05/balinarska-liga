@@ -700,30 +700,36 @@
             document.querySelector('#gumb-tekme .puscica').classList.toggle('obrni');
         });
 
-        function navigacija(idStrani) {
+        function navigacija(idStrani, dodajVZgodovino = true) {
             prikaziStran(idStrani);
             stranskiMeni.classList.remove('sidebar-odprta');
             hamburgerToggle.classList.remove('aktivno');
             
-            // 1. Odstrani razred 'aktiven' z vseh gumbov v meniju (vključno z gumbom Tekme)
+            // 1. Odstrani razred 'aktiven' z vseh gumbov v meniju
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('aktiven'));
             
-            // 2. Zapri podmeni Tekme, če navigiramo na stran, ki ni povezana s tekmami
+            // 2. Zapri podmeni Tekme, če navigiramo stran od tekem
             if (!idStrani.startsWith('tekme')) {
-                document.getElementById('podmeni-tekme').classList.remove('dropdown-otvoren');
-                document.querySelector('#gumb-tekme .puscica').classList.remove('obrni');
+                const podmeni = document.getElementById('podmeni-tekme');
+                if (podmeni) podmeni.classList.remove('dropdown-otvoren');
+                const puscica = document.querySelector('#gumb-tekme .puscica');
+                if (puscica) puscica.classList.remove('obrni');
             }
 
-            // 3. Označi pravilen gumb glede na izbrano stran
+            // 3. Označi pravilen gumb
             if (idStrani.startsWith('tekme')) {
-                document.getElementById('gumb-tekme').classList.add('aktiven');
+                const gumbTekme = document.getElementById('gumb-tekme');
+                if (gumbTekme) gumbTekme.classList.add('aktiven');
             } else {
                 const aktivniGumb = document.querySelector(`.menu-item[data-stran="${idStrani}"]`);
-                if (aktivniGumb) {
-                    aktivniGumb.classList.add('aktiven');
-                }
+                if (aktivniGumb) aktivniGumb.classList.add('aktiven');
             }
             
+            // 4. Dodajanje stanja v zgodovino brskalnika
+            if (dodajVZgodovino) {
+                history.pushState({ stranId: idStrani }, '', '#' + idStrani);
+            }
+
             window.scrollTo({ top: 0 });
         }
 
@@ -967,6 +973,26 @@
             }
             return podatki;
         }
+
+        // Poslušalec za klik na gumb NAZAJ / NAPREJ v brskalniku ali na telefonu
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.stranId) {
+                // Ob kliku na 'Nazaj' prikažemo prejšnjo stran, a NE dodajamo znova v zgodovino
+                navigacija(event.state.stranId, false);
+            } else {
+                // Če ni stanja v zgodovini, preberemo hash iz URL-ja ali odpremo 'domov'
+                const hashStran = window.location.hash.replace('#', '');
+                navigacija(hashStran || 'domov', false);
+            }
+        });
+
+        // Inicializacija ob prvem nalaganju strani
+        document.addEventListener('DOMContentLoaded', function() {
+            const zacetniHash = window.location.hash.replace('#', '') || 'domov';
+            // Zabeležimo začetno stanje brez dodajanja novega vnosa v zgodovino
+            history.replaceState({ stranId: zacetniHash }, '', '#' + zacetniHash);
+            navigacija(zacetniHash, false);
+        });
 
         inicializirajAplikacijo();
     </script>
