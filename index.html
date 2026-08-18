@@ -6,203 +6,413 @@
     <title>ŠLUB - Štajerska liga upokojencev balinanje | Uradna stran</title>
     <meta name="description" content="Uradna spletna stran Štajerske lige upokojencev v balinanju (ŠLUB). Preglejte najnovejše rezultate, lestvice ekip in razpored prihodnjih tekem.">
     <meta name="keywords" content="ŠLUB, štajerska liga upokojencev balinanje, balinarska liga Štajerska, balinanje upokojenci, lestvica balinanje">
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* --- BAZIČNI STILI & POSTAVITEV (SPA) --- */
+        /* ============================================
+           TOKENI OBLIKOVANJA
+        ============================================ */
+        :root {
+            --ink: #1E2A22;
+            --pine: #2F5233;
+            --pine-dark: #203823;
+            --pine-light: #4A7856;
+            --sand: #EFE3C4;
+            --sand-dim: #F4ECD9;
+            --cream: #FBF8F2;
+            --rust: #BD5B38;
+            --rust-dark: #9C4A2D;
+            --gold: #C99A3E;
+            --silver: #9AA4AC;
+            --bronze: #B57A4C;
+            --white: #FFFFFF;
+            --muted: #80887A;
+            --line: #E7E0D0;
+            --good: #3F7D4F;
+            --bad: #B23A3A;
+            --shadow: 0 2px 10px rgba(30, 42, 34, 0.07);
+            --shadow-lg: 0 10px 30px rgba(30, 42, 34, 0.12);
+            --radius: 16px;
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-body);
             margin: 0;
-            background-color: #f8f9fa;
+            background-color: var(--cream);
             display: flex;
             flex-direction: column;
-            color: #333;
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
         }
+
+        ::selection { background: var(--gold); color: var(--ink); }
 
         /* --- MOBILNA GLAVNA VRSTICA (Zgoraj) --- */
         .mobilna-glava {
             display: none;
-            background-color: #b7d209;
+            background: var(--pine-dark);
             color: white;
-            padding: 10px 20px;
-            justify-content: flex-start; /* Poravnava na levo zaradi hamburgerja */
+            padding: 0 18px;
+            justify-content: flex-start;
             align-items: center;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            top: 0; left: 0; right: 0;
+            height: 58px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
             z-index: 200;
             box-sizing: border-box;
-            gap: 20px; /* Razmak med hamburgerjem in naslovom */
+            gap: 16px;
         }
 
         .mobilna-glava .naslov-strani {
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.01em;
         }
 
-        /* Gumb za hamburger s tremi črticami na levi */
         .hamburger-gumb {
-            background: none;
+            background: rgba(255,255,255,0.08);
             border: none;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
-            width: 30px;
-            height: 24px;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            width: 38px;
+            height: 38px;
             padding: 0;
+            flex-shrink: 0;
         }
 
         .hamburger-gumb span {
-            width: 100%;
-            height: 3px;
+            width: 18px;
+            height: 2px;
             background-color: white;
             border-radius: 2px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
+
+        .hamburger-gumb.aktivno span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+        .hamburger-gumb.aktivno span:nth-child(2) { opacity: 0; }
+        .hamburger-gumb.aktivno span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
 
         /* --- STRANSKI MENI (SIDEBAR) --- */
         .sidebar {
             width: 250px;
             height: 100vh;
-            background-color: #b7d209;
+            background: linear-gradient(185deg, var(--pine) 0%, var(--pine-dark) 100%);
             color: white;
             position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 20px;
-            box-shadow: 4px 0 10px #596505;
+            top: 0; left: 0;
+            padding-top: 8px;
             box-sizing: border-box;
             z-index: 150;
             transition: transform 0.3s ease;
-            
-            /* Centriranje vseh elementov znotraj sidebarka */
             display: flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
         }
 
         .logo-kontejner {
             text-align: center;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+            padding: 22px 20px 18px;
+            margin-bottom: 6px;
             box-sizing: border-box;
             width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
 
         .sidebar-logo {
             max-width: 100%;
             height: auto;
-            max-height: 120px;
+            max-height: 92px;
             object-fit: contain;
         }
 
+        .logo-podnapis {
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .meni-seznam {
+            width: 100%;
+            padding: 6px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .menu-item {
-            display: block;
-            padding: 15px 25px;
-            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: rgba(255,255,255,0.82);
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.2s, color 0.2s;
             border: none;
             background: none;
             width: 100%;
-            text-align: center; /* Centrirano besedilo glavnih gumbov */
-            font-size: 1rem;
-            box-sizing: border-box;
+            text-align: left;
+            border-radius: 10px;
+            font-family: var(--font-body);
         }
 
-        .menu-item:hover {
-            background-color: #596505;
-            color: white;
-        }
+        .menu-item svg { flex-shrink: 0; opacity: 0.85; }
+        .menu-item:hover { background-color: rgba(255,255,255,0.08); color: white; }
+        .menu-item.aktiven { background-color: var(--rust); color: white; }
+        .menu-item .puscica { margin-left: auto; transition: transform 0.25s ease; opacity: 0.6; }
+        .menu-item .puscica.obrni { transform: rotate(180deg); }
 
         /* --- PODMENI --- */
         .dropdown-container {
             max-height: 0;
             overflow: hidden;
-            background-color: #596505;
             transition: max-height 0.3s ease-out;
-            width: 100%; /* Da se barva ozadja podmenija raztegne čez celo širino */
+            width: 100%;
+            padding: 0 14px;
         }
 
         .dropdown-container div {
-            display: block;
-            padding: 12px 20px;
-            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px 10px 42px;
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: color 0.2s;
-            text-align: center; /* Centrirano besedilo v podmeniju */
+            transition: color 0.2s, background 0.2s;
+            border-radius: 8px;
         }
 
-        .dropdown-container div:hover {
-            color: #000000;
-        }
+        .dropdown-container div:hover { color: white; background: rgba(255,255,255,0.06); }
+        .dropdown-otvoren { max-height: 200px; padding-bottom: 6px; }
 
-        .dropdown-otvoren {
-            max-height: 200px;
+        .sidebar-podnozje {
+            margin-top: auto;
+            padding: 18px 20px 22px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
         }
 
         /* --- GLAVNA VSEBINA DESNO --- */
         .glavna-vsebina {
             margin-left: 250px;
-            padding: 40px;
+            padding: 48px 40px 60px;
             width: calc(100% - 250px);
             box-sizing: border-box;
             min-height: 100vh;
         }
 
         /* --- STRANI (POGLEDI) --- */
-        .stran {
-            display: none;
+        .stran { display: none; }
+        .stran-aktivna { display: block !important; animation: pojavi 0.35s ease; }
+        @keyframes pojavi { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- NASLOVI --- */
+        h1 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 2.1rem;
+            color: var(--ink);
+            margin: 0 0 28px;
+            letter-spacing: -0.01em;
         }
-        .stran-aktivna {
-            display: block !important;
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: var(--ink);
+            max-width: 900px;
+            margin: 44px auto 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h2::before {
+            content: '';
+            width: 6px; height: 22px;
+            background: var(--rust);
+            border-radius: 3px;
+            display: inline-block;
+        }
+        h3.naslov-kroga {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--pine-dark);
+            background: var(--sand-dim);
+            border: 1px solid var(--line);
+            padding: 10px 18px;
+            border-radius: 10px;
+            max-width: 900px;
+            margin: 30px auto 12px;
+            font-size: 1.05rem;
+        }
+        h4.naslov-prestavljene {
+            color: var(--rust-dark);
+            margin: 14px auto 6px;
+            max-width: 900px;
+            font-style: italic;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        /* --- STILI ZA TABELE & KROGE --- */
-        h1 { text-align: center; color: #b7d209; margin-bottom: 30px; }
-        h2 { color: #b90909; border-bottom: 2px solid #b90909; padding-bottom: 8px; max-width: 900px; margin: 40px auto 20px auto; }
-        h3.naslov-kroga { color: #1e3a8a; background: #e0f2fe; padding: 10px 15px; border-radius: 5px; max-width: 900px; margin: 30px auto 10px auto; }
-        h4.naslov-prestavljene { color: #b45309; margin: 15px auto 5px auto; max-width: 900px; font-style: italic; font-size: 0.95rem;}
-        
-        .tabela-kontejner { 
-            overflow-x: auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-            max-width: 900px; 
-            margin: 0 auto 20px auto; 
+        /* --- HERO (DOMOV) --- */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, var(--pine) 0%, var(--pine-dark) 100%);
+            border-radius: 24px;
+            padding: 56px 40px;
+            color: white;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+        .hero-krogi { position: absolute; inset: 0; pointer-events: none; opacity: 0.9; }
+        .hero-krog {
+            position: absolute;
+            border-radius: 50%;
+        }
+        .hero-vsebina { position: relative; z-index: 2; max-width: 560px; }
+        .hero-nadnaslov {
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .hero h1 {
+            color: white;
+            font-size: 2.6rem;
+            margin-bottom: 14px;
+            line-height: 1.08;
+        }
+        .hero p {
+            color: rgba(255,255,255,0.78);
+            font-size: 1.02rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .hitre-povezave {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .povezava-kartica {
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            text-align: left;
+        }
+        .povezava-kartica:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--rust);
+        }
+        .povezava-ikona {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: var(--sand-dim);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            color: var(--rust);
+        }
+        .povezava-kartica strong {
+            font-family: var(--font-display);
+            font-size: 1.08rem;
+            display: block;
+            margin-bottom: 4px;
+            color: var(--ink);
+        }
+        .povezava-kartica span.opis { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+
+        /* --- TABELE (SKUPNO) --- */
+        .tabela-kontejner {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--line);
+            max-width: 900px;
+            margin: 0 auto 20px;
             box-sizing: border-box;
+            overflow: hidden;
         }
-        .tabela-Mala { 
-            max-width: 900px; 
-            margin: 0 auto 30px auto; 
-            border: 1px dashed #b45309; 
-            padding: 10px; 
-            border-radius: 8px; 
-            background: #fffbef;
-            overflow-x: auto;
+        .tabela-scroll { overflow-x: auto; }
+        .tabela-Mala {
+            max-width: 900px;
+            margin: 0 auto 30px;
+            border: 1.5px dashed var(--rust);
+            padding: 4px;
+            border-radius: 14px;
+            background: var(--sand-dim);
+            overflow: hidden;
         }
-        
-        table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #e5e7eb; text-align: center; white-space: nowrap; }
-        th { background-color: #b7d209; color: white; font-weight: 600; }
-        .tabela-Mala th { background-color: #b45309; }
-        tr:hover { background-color: #f1f5f9; }
-        
-        .loading { text-align: center; font-style: italic; color: #666; margin-top: 100px; font-size: 1.2rem; }
-        .rezultat { font-weight: bold; text-align: center; width: 60px; display: inline-block;}
+        .tabela-Mala .tabela-scroll { overflow-x: auto; }
 
-        /* POPRAVLJENO: Sticka prvi stolpec SAMO v prvi vrstici glave in v telesu */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th, td {
+            padding: 13px 15px;
+            border-bottom: 1px solid var(--line);
+            text-align: center;
+            white-space: nowrap;
+            font-size: 0.92rem;
+        }
+        th {
+            background-color: var(--pine);
+            color: white;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .tabela-Mala th { background-color: var(--rust); }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background-color: var(--sand-dim); }
+        tbody tr { transition: background-color 0.15s; }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: var(--muted);
+            margin-top: 100px;
+            font-size: 1.05rem;
+            font-family: var(--font-body);
+        }
+
+        /* --- Sticky prvi stolpci na desktopu --- */
         #body-lestvica1 td:nth-child(2), #body-lestvica2 td:nth-child(2),
         #stran-lestvice table thead tr:first-child th:nth-child(2) {
             position: -webkit-sticky;
@@ -210,98 +420,262 @@
             left: 0;
             background-color: white;
             z-index: 10;
+            text-align: left;
+            font-weight: 700;
+            font-family: var(--font-display);
         }
-
         #stran-lestvice table thead tr:first-child th:nth-child(2) {
-            background-color: #b7d209; /* CSS barva za glavo tabele lestvice */
+            background-color: var(--pine);
             z-index: 11;
         }
-
-        
-
-        tr:hover td {
-            background-color: #f1f5f9 !important;
+        tbody#body-lestvica1 tr:hover td:nth-child(2),
+        tbody#body-lestvica2 tr:hover td:nth-child(2) {
+            background-color: var(--sand-dim);
         }
 
-        /* --- ODZIVNOST (RESPONSIVENESS) --- */
+        /* --- Značke uvrstitve --- */
+        .badge-mesto {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: var(--sand-dim);
+            color: var(--pine-dark);
+            border: 1px solid var(--line);
+        }
+        .badge-mesto.zlato { background: linear-gradient(135deg, #F3D27A, var(--gold)); color: #5A4416; border: none; box-shadow: 0 2px 6px rgba(201,154,62,0.4); }
+        .badge-mesto.srebro { background: linear-gradient(135deg, #E7ECEF, var(--silver)); color: #3A4247; border: none; box-shadow: 0 2px 6px rgba(154,164,172,0.35); }
+        .badge-mesto.bron { background: linear-gradient(135deg, #E0B48C, var(--bronze)); color: #5A3A1E; border: none; box-shadow: 0 2px 6px rgba(181,122,76,0.35); }
+
+        .tocke-pill {
+            display: inline-block;
+            background: var(--rust);
+            color: white;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+        }
+
+        .rezultat-pill {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            background: var(--sand-dim);
+            border: 1px solid var(--line);
+            color: var(--ink);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.92rem;
+            min-width: 56px;
+        }
+
+        .ime-ekipe { text-align: left; }
+
+        /* ============================================
+           ODZIVNOST — MOBILNE KARTICE
+        ============================================ */
         @media (max-width: 768px) {
-            .mobilna-glava {
-                display: flex;
-            }
+            .mobilna-glava { display: flex; }
             .sidebar {
                 transform: translateX(-100%);
-                top: 60px;
-                height: calc(100vh - 60px);
-                width: auto; /* Avtomatska širina glede na vsebino */
-                min-width: 200px; /* Minimalna širina, da ne izgleda preozko pri kratkih besedilih */
-                max-width: 280px; /* Maksimalna meja, da ne skoči čez pol ekrana */
-                padding-right: 15px; /* Nekaj malega odmika na robovih */
-                padding-left: 15px;
+                top: 0;
+                height: 100vh;
+                width: 78%;
+                min-width: 230px;
+                max-width: 290px;
+                box-shadow: 8px 0 24px rgba(0,0,0,0.25);
             }
-            .sidebar-odprta {
-                transform: translateX(0);
-            }
+            .sidebar-odprta { transform: translateX(0); }
             .glavna-vsebina {
                 margin-left: 0;
                 width: 100%;
-                padding: 20px 10px;
-                margin-top: 60px;
+                padding: 76px 14px 40px;
             }
+            .hero { padding: 34px 22px; border-radius: 18px; }
+            .hero h1 { font-size: 1.9rem; }
+            h1 { font-size: 1.6rem; }
+            h2 { font-size: 1.2rem; margin: 34px 4px 14px; }
 
-            /* Hamburger animacija */
-            .hamburger-gumb.aktivno span:nth-child(1) {
-                transform: rotate(45deg) translate(6px, 6px);
+            /* --- Lestvica: pretvorba tabele v kartice --- */
+            #stran-lestvice .tabela-scroll { overflow: visible; }
+            #stran-lestvice table thead { display: none; }
+            #stran-lestvice table, #stran-lestvice tbody { display: block; width: 100%; }
+            #stran-lestvice .tabela-kontejner { background: transparent; box-shadow: none; border: none; padding: 0; }
+
+            #stran-lestvice tr {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 8px 8px;
+                background: white;
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                padding: 14px 14px 12px;
+                margin-bottom: 10px;
+                box-shadow: var(--shadow);
             }
-            .hamburger-gumb.aktivno span:nth-child(2) {
-                opacity: 0;
+            #stran-lestvice td {
+                border-bottom: none;
+                padding: 0;
+                white-space: normal;
+                font-size: 0.86rem;
             }
-            .hamburger-gumb.aktivno span:nth-child(3) {
-                transform: rotate(-45deg) translate(5px, -5px);
+            #stran-lestvice td:nth-child(1) { order: 1; flex: 0 0 auto; position: static; }
+            #stran-lestvice td:nth-child(2) {
+                order: 2; flex: 1 1 auto; text-align: left; font-size: 1rem;
+                position: static; background: transparent !important;
             }
+            #stran-lestvice td:nth-child(7) { order: 3; flex: 0 0 auto; }
+
+            #stran-lestvice td:nth-child(3),
+            #stran-lestvice td:nth-child(4),
+            #stran-lestvice td:nth-child(5),
+            #stran-lestvice td:nth-child(6) {
+                order: 10;
+                flex: 1 1 calc(25% - 8px);
+                background: var(--sand-dim);
+                border-radius: 8px;
+                padding: 6px 2px;
+                text-align: center;
+            }
+            #stran-lestvice td:nth-child(8),
+            #stran-lestvice td:nth-child(9),
+            #stran-lestvice td:nth-child(10) {
+                order: 11;
+                flex: 1 1 calc(33.33% - 8px);
+                background: #EAF1EC;
+                border-radius: 8px;
+                padding: 6px 2px;
+                text-align: center;
+            }
+            #stran-lestvice td:nth-child(11),
+            #stran-lestvice td:nth-child(12),
+            #stran-lestvice td:nth-child(13) {
+                order: 12;
+                flex: 1 1 calc(33.33% - 8px);
+                background: #FBF1DE;
+                border-radius: 8px;
+                padding: 6px 2px;
+                text-align: center;
+            }
+            #stran-lestvice td[data-label]::before {
+                content: attr(data-label);
+                display: block;
+                font-size: 0.62rem;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                color: var(--muted);
+                font-weight: 700;
+                margin-bottom: 2px;
+            }
+            #stran-lestvice td:nth-child(2)::before,
+            #stran-lestvice td:nth-child(1)::before,
+            #stran-lestvice td:nth-child(7)::before { content: none; }
+
+            /* --- Tekme: pretvorba v kartice --- */
+            .vrstica-tekme { display: flex !important; flex-wrap: wrap; gap: 4px 10px;
+                background: white; border: 1px solid var(--line); border-radius: 14px;
+                padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow); }
+            .vrstica-tekme td { border-bottom: none; padding: 0; white-space: normal; }
+            .vrstica-tekme .krog-dejanski { order: 0; flex: 1 1 100%; text-align: left; font-size: 0.72rem; color: var(--rust-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+            .vrstica-tekme .ekipa-domaci { order: 1; flex: 1 1 100%; text-align: left; font-weight: 700; font-family: var(--font-display); font-size: 1rem; }
+            .vrstica-tekme .celica-rezultat { order: 2; flex: 1 1 100%; text-align: center; margin: 4px 0; }
+            .vrstica-tekme .ekipa-gostje { order: 3; flex: 1 1 100%; text-align: left; font-weight: 700; font-family: var(--font-display); font-size: 1rem; }
+            .vrstica-tekme .celica-punti { order: 4; flex: 1 1 100%; text-align: center; font-size: 0.78rem; color: var(--muted); }
+            .vrstica-tekme td[data-label]::before { content: none; }
+            .tabela-kontejner:has(.vrstica-tekme) { background: transparent; box-shadow: none; border: none; padding: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Glava s hamburger gumbom na LEVI strani -->
+    <!-- Mobilna glava -->
     <div class="mobilna-glava">
-        <button class="hamburger-gumb" id="hamburger-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
+        <button class="hamburger-gumb" id="hamburger-toggle" aria-label="Odpri meni">
+            <span></span><span></span><span></span>
         </button>
         <span class="naslov-strani">ŠLUB Balinanje</span>
     </div>
 
-    <!-- Stranski meni z avtomatsko širino in centriranimi elementi -->
+    <!-- Stranski meni -->
     <div class="sidebar" id="stranski-meni">
         <div class="logo-kontejner">
             <img src="recourses/ŠLUB_logo.png" alt="Štajerska Balinarska Liga" class="sidebar-logo">
+            <div class="logo-podnapis">Štajerska liga upokojencev</div>
         </div>
-        <button class="menu-item" onclick="navigacija('domov')">Domov</button>
-        <button class="menu-item" onclick="navigacija('lestvice')">Lestvice</button>
-        <button class="menu-item" id="gumb-tekme">Tekme ▼</button>
-        <div class="dropdown-container" id="podmeni-tekme">
-            <div onclick="navigacija('tekme1')">1. Štajerska Liga</div>
-            <div onclick="navigacija('tekme2')">2. Štajerska Liga</div>
+        <div class="meni-seznam">
+            <button class="menu-item" data-stran="domov" onclick="navigacija('domov')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+                Domov
+            </button>
+            <button class="menu-item" data-stran="lestvice" onclick="navigacija('lestvice')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a1 1 0 0 0-1 1 4 4 0 0 0 4 4M17 6h3a1 1 0 0 1 1 1 4 4 0 0 1-4 4"/></svg>
+                Lestvice
+            </button>
+            <button class="menu-item" id="gumb-tekme">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Tekme
+                <svg class="puscica" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="dropdown-container" id="podmeni-tekme">
+                <div onclick="navigacija('tekme1')">1. Štajerska Liga</div>
+                <div onclick="navigacija('tekme2')">2. Štajerska Liga</div>
+            </div>
         </div>
+        <div class="sidebar-podnozje">ŠLUB &copy; 2026</div>
     </div>
 
     <div class="glavna-vsebina">
-        <div id="status-nalaganja" class="loading">Nalaganje podatkov iz Google Sheets...</div>
+        <div id="status-nalaganja" class="loading">Nalaganje podatkov …</div>
 
         <div id="stran-domov" class="stran">
-            <h1>Dobrodošli</h1>
-            <div class="tabela-kontejner">
-                <p style="text-align: center;">Uporabite stranski meni za pregled uradnih lestvic ali rezultatov tekem po posameznih krogih v živo.</p>
+            <div class="hero">
+                <div class="hero-krogi">
+                    <div class="hero-krog" style="width:220px;height:220px;background:radial-gradient(circle at 30% 30%, var(--gold), transparent 70%);top:-60px;right:-40px;"></div>
+                    <div class="hero-krog" style="width:140px;height:140px;background:radial-gradient(circle at 35% 35%, var(--rust), transparent 70%);bottom:-30px;right:120px;opacity:0.7;"></div>
+                    <div class="hero-krog" style="width:90px;height:90px;border:2px solid rgba(255,255,255,0.15);bottom:20px;right:40px;border-radius:50%;"></div>
+                </div>
+                <div class="hero-vsebina">
+                    <div class="hero-nadnaslov">Sezona 2025 / 2026</div>
+                    <h1>ŠLUB</h1>
+                    <p>Uradna stran Štajerske lige upokojencev v balinanju. Preglejte trenutne lestvice obeh lig ali si oglejte rezultate in razpored tekem po posameznih krogih.</p>
+                </div>
+            </div>
+
+            <div class="hitre-povezave">
+                <button class="povezava-kartica" onclick="navigacija('lestvice')">
+                    <span class="povezava-ikona">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/></svg>
+                    </span>
+                    <span>
+                        <strong>Lestvice</strong>
+                        <span class="opis">Trenutna razvrstitev ekip v 1. in 2. Štajerski ligi.</span>
+                    </span>
+                </button>
+                <button class="povezava-kartica" onclick="navigacija('tekme1')">
+                    <span class="povezava-ikona">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    </span>
+                    <span>
+                        <strong>Tekme</strong>
+                        <span class="opis">Rezultati in razpored tekem po krogih za obe ligi.</span>
+                    </span>
+                </button>
             </div>
         </div>
 
         <div id="stran-lestvice" class="stran">
-            <h1>🏆 Trenutne Lestvice Lig</h1>
-            
+            <h1>Trenutne lestvice lig</h1>
+
             <h2>1. Štajerska Liga</h2>
             <div class="tabela-kontejner">
+                <div class="tabela-scroll">
                 <table>
                     <thead>
                         <tr>
@@ -316,20 +690,22 @@
                             <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Punti</th>
                         </tr>
                         <tr>
-                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
-                            <th style="text-align: center; font-size: 0.85rem;">R</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
-                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.7rem;">R</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.7rem;">R</th>
                         </tr>
                     </thead>
                     <tbody id="body-lestvica1"></tbody>
                 </table>
+                </div>
             </div>
 
             <h2>2. Štajerska Liga</h2>
             <div class="tabela-kontejner">
+                <div class="tabela-scroll">
                 <table>
                     <thead>
                         <tr>
@@ -344,26 +720,27 @@
                             <th colspan="3" style="text-align: center; border-bottom: 1px solid rgba(255,255,255,0.3);">Punti</th>
                         </tr>
                         <tr>
-                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
-                            <th style="text-align: center; font-size: 0.85rem;">R</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Z</th>
-                            <th style="text-align: center; font-size: 0.85rem;">Iz</th>
-                            <th style="text-align: center; font-size: 0.85rem;">R</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.7rem;">R</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Z</th>
+                            <th style="text-align: center; font-size: 0.7rem;">Iz</th>
+                            <th style="text-align: center; font-size: 0.7rem;">R</th>
                         </tr>
                     </thead>
                     <tbody id="body-lestvica2"></tbody>
                 </table>
+                </div>
             </div>
         </div>
 
         <div id="stran-tekme1" class="stran">
-            <h1>Tekme - 1. Štajerska Liga</h1>
+            <h1>Tekme &mdash; 1. Štajerska Liga</h1>
             <div id="kontejner-tekme1"></div>
         </div>
 
         <div id="stran-tekme2" class="stran">
-            <h1>Tekme - 2. Štajerska Liga</h1>
+            <h1>Tekme &mdash; 2. Štajerska Liga</h1>
             <div id="kontejner-tekme2"></div>
         </div>
     </div>
@@ -380,22 +757,40 @@
 
         document.getElementById('gumb-tekme').addEventListener('click', function() {
             document.getElementById('podmeni-tekme').classList.toggle('dropdown-otvoren');
+            document.querySelector('#gumb-tekme .puscica').classList.toggle('obrni');
         });
 
-        // SPA Navigacijska funkcija, ki hkrati zapre mobilni meni ob izbiri
         function navigacija(idStrani) {
             prikaziStran(idStrani);
             stranskiMeni.classList.remove('sidebar-odprta');
             hamburgerToggle.classList.remove('aktivno');
-            window.scrollTo({ top: 0});
+            
+            // 1. Odstrani razred 'aktiven' z vseh gumbov v meniju (vključno z gumbom Tekme)
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('aktiven'));
+            
+            // 2. Zapri podmeni Tekme, če navigiramo na stran, ki ni povezana s tekmami
+            if (!idStrani.startsWith('tekme')) {
+                document.getElementById('podmeni-tekme').classList.remove('dropdown-otvoren');
+                document.querySelector('#gumb-tekme .puscica').classList.remove('obrni');
+            }
+
+            // 3. Označi pravilen gumb glede na izbrano stran
+            if (idStrani.startsWith('tekme')) {
+                document.getElementById('gumb-tekme').classList.add('aktiven');
+            } else {
+                const aktivniGumb = document.querySelector(`.menu-item[data-stran="${idStrani}"]`);
+                if (aktivniGumb) {
+                    aktivniGumb.classList.add('aktiven');
+                }
+            }
+            
+            window.scrollTo({ top: 0 });
         }
 
         function prikaziStran(idStrani) {
             document.querySelectorAll('.stran').forEach(s => s.classList.remove('stran-aktivna'));
             const izbranaStran = document.getElementById('stran-' + idStrani);
-            if(izbranaStran) {
-                izbranaStran.classList.add('stran-aktivna');
-            }
+            if (izbranaStran) izbranaStran.classList.add('stran-aktivna');
         }
 
         // --- PODATKOVNA LOGIKA (GOOGLE SHEETS) ---
@@ -427,6 +822,7 @@
 
                 document.getElementById('status-nalaganja').style.display = 'none';
                 prikaziStran('domov');
+                document.querySelector('.menu-item[data-stran="domov"]').classList.add('aktiven');
 
             } catch (napaka) {
                 console.error("Napaka pri nalaganju:", napaka);
@@ -444,7 +840,7 @@
                 const gosti = tekma['Gosti'];
                 const tockeD = parseInt(tekma['Tocke_D']);
                 const tockeG = parseInt(tekma['Tocke_G']);
-                
+
                 const igreD = parseInt(tekma['Igre_D']) || 0;
                 const igreG = parseInt(tekma['Igre_G']) || 0;
                 const puntiD = parseInt(tekma['Punti_D']) || 0;
@@ -472,17 +868,17 @@
                 tLestvica[gosti].puntiIz += puntiD;
 
                 if (tockeD > tockeG) {
-                    tLestvica[domaci].zmage += 1; 
+                    tLestvica[domaci].zmage += 1;
                     tLestvica[domaci].tocke += 2;
                     tLestvica[gosti].porazi += 1;
                 } else if (tockeG > tockeD) {
-                    tLestvica[gosti].zmage += 1; 
+                    tLestvica[gosti].zmage += 1;
                     tLestvica[gosti].tocke += 2;
                     tLestvica[domaci].porazi += 1;
                 } else {
                     tLestvica[domaci].izanaceni += 1;
                     tLestvica[gosti].izanaceni += 1;
-                    tLestvica[domaci].tocke += 1; 
+                    tLestvica[domaci].tocke += 1;
                     tLestvica[gosti].tocke += 1;
                 }
             });
@@ -504,25 +900,27 @@
             tbody.innerHTML = podatki.map((ekipa, i) => {
                 const igreR = ekipa.igreZ - ekipa.igreIz;
                 const puntiR = ekipa.puntiZ - ekipa.puntiIz;
-                
+
                 const prikazIgreR = igreR > 0 ? `+${igreR}` : igreR;
                 const prikazPuntiR = puntiR > 0 ? `+${puntiR}` : puntiR;
 
+                const razredMedalje = i === 0 ? 'zlato' : i === 1 ? 'srebro' : i === 2 ? 'bron' : '';
+
                 return `
                     <tr>
-                        <td><strong>${i + 1}.</strong></td>
-                        <td>${ekipa.ime}</td>
-                        <td>${ekipa.tekme}</td>
-                        <td>${ekipa.zmage}</td>
-                        <td>${ekipa.izanaceni}</td>
-                        <td>${ekipa.porazi}</td>
-                        <td><strong>${ekipa.tocke}</strong></td>
-                        <td>${ekipa.igreZ}</td>
-                        <td>${ekipa.igreIz}</td>
-                        <td style="font-weight: 600; color: ${igreR >= 0 ? '#1eb909' : '#b90909'}">${prikazIgreR}</td>
-                        <td>${ekipa.puntiZ}</td>
-                        <td>${ekipa.puntiIz}</td>
-                        <td style="font-weight: 600; color: ${puntiR >= 0 ? '#1eb909' : '#b90909'}">${prikazPuntiR}</td>
+                        <td data-label="Mesto"><span class="badge-mesto ${razredMedalje}">${i + 1}</span></td>
+                        <td data-label="Ekipa" class="ime-ekipe">${ekipa.ime}</td>
+                        <td data-label="Tekme">${ekipa.tekme}</td>
+                        <td data-label="Zmage">${ekipa.zmage}</td>
+                        <td data-label="Izenačene">${ekipa.izanaceni}</td>
+                        <td data-label="Porazi">${ekipa.porazi}</td>
+                        <td data-label="Točke"><span class="tocke-pill">${ekipa.tocke}</span></td>
+                        <td data-label="Igre (za)">${ekipa.igreZ}</td>
+                        <td data-label="Igre (proti)">${ekipa.igreIz}</td>
+                        <td data-label="Razlika iger" style="font-weight: 600; color: ${igreR >= 0 ? 'var(--good)' : 'var(--bad)'}">${prikazIgreR}</td>
+                        <td data-label="Punti (za)">${ekipa.puntiZ}</td>
+                        <td data-label="Punti (proti)">${ekipa.puntiIz}</td>
+                        <td data-label="Razlika puntov" style="font-weight: 600; color: ${puntiR >= 0 ? 'var(--good)' : 'var(--bad)'}">${prikazPuntiR}</td>
                     </tr>
                 `;
             }).join('');
@@ -538,10 +936,10 @@
                 return targetLiga === '1' ? (l === '1' || l.includes('1')) : (l === '2' || l.includes('2'));
             });
 
-            const krogiObjave = [...new Set(ligaTekme.map(t => parseInt(t['Objava'])).filter(k => !isNaN(k)))].sort((a,b) => a - b);
+            const krogiObjave = [...new Set(ligaTekme.map(t => parseInt(t['Objava'])).filter(k => !isNaN(k)))].sort((a, b) => a - b);
 
-            if(krogiObjave.length === 0) {
-                kontejner.innerHTML = '<p style="text-align:center; font-style:italic;">Ni podatkov o tekmah za to ligo.</p>';
+            if (krogiObjave.length === 0) {
+                kontejner.innerHTML = '<p style="text-align:center; font-style:italic; color: var(--muted);">Ni podatkov o tekmah za to ligo.</p>';
                 return;
             }
 
@@ -551,19 +949,19 @@
 
                 let krogHTML = `<h3 class="naslov-kroga">Krog ${krogObjava}</h3>`;
 
-                krogHTML += `<div class="tabela-kontejner"><table>
+                krogHTML += `<div class="tabela-kontejner"><div class="tabela-scroll"><table>
                     <thead><tr><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
                     <tbody>`;
-                
-                if(redneTekme.length > 0) {
+
+                if (redneTekme.length > 0) {
                     redneTekme.forEach(t => { krogHTML += ustvariVrsticoTekme(t); });
                 } else {
-                    krogHTML += `<tr><td colspan="4" style="text-align:center; color:#999;">V tem krogu ni bilo rednih tekem.</td></tr>`;
+                    krogHTML += `<tr><td colspan="4" style="text-align:center; color: var(--muted);">V tem krogu ni bilo rednih tekem.</td></tr>`;
                 }
-                krogHTML += `</tbody></table></div>`;
+                krogHTML += `</tbody></table></div></div>`;
 
-                if(prestavljeneTekme.length > 0) {
-                    krogHTML += `<div class="tabela-Mala">
+                if (prestavljeneTekme.length > 0) {
+                    krogHTML += `<div class="tabela-Mala"><div class="tabela-scroll">
                         <h4 class="naslov-prestavljene">Tekme iz drugih krogov, objavljene v ${krogObjava}. krogu:</h4>
                         <table>
                         <thead><tr><th>Dejanski Krog</th><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
@@ -571,7 +969,7 @@
                     prestavljeneTekme.forEach(t => {
                         krogHTML += ustvariVrsticoTekme(t, true);
                     });
-                    krogHTML += `</tbody></table></div>`;
+                    krogHTML += `</tbody></table></div></div>`;
                 }
 
                 kontejner.innerHTML += krogHTML;
@@ -584,16 +982,16 @@
             const puntiD = t['Punti_D'] ? t['Punti_D'].trim() : '';
             const puntiG = t['Punti_G'] ? t['Punti_G'].trim() : '';
 
-            const izpisRezultata = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '  :  ';
-            const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `${puntiD} : ${puntiG}` : '  :  ';
-            const dejanskiKrogStolpec = vkljuciDejanskiKrog ? `<td><strong>Krog ${t['Krog']}</strong></td>` : '';
+            const izpisRezultata = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '– : –';
+            const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `Punti ${puntiD} : ${puntiG}` : '';
+            const dejanskiKrogStolpec = vkljuciDejanskiKrog ? `<td class="krog-dejanski" data-label="Krog"><strong>Krog ${t['Krog']}</strong></td>` : '';
 
-            return `<tr>
+            return `<tr class="vrstica-tekme">
                 ${dejanskiKrogStolpec}
-                <td>${t['Domaci']}</td>
-                <td>${t['Gosti']}</td>
-                <td style="text-align:center"><span class="rezultat">${izpisRezultata}</span></td>
-                <td style="text-align:center; color:#666; font-size:0.9rem;">${izpisPuntov}</td>
+                <td class="ekipa-domaci" data-label="Domači">${t['Domaci']}</td>
+                <td class="ekipa-gostje" data-label="Gostje">${t['Gosti']}</td>
+                <td class="celica-rezultat" data-label="Rezultat"><span class="rezultat-pill">${izpisRezultata}</span></td>
+                <td class="celica-punti" data-label="Punti">${izpisPuntov}</td>
             </tr>`;
         }
 
