@@ -480,8 +480,13 @@
         /* ============================================
            ODZIVNOST — MOBILNE KARTICE
         ============================================ */
+        /* ============================================
+           ODZIVNOST — MOBILNI PRIKAZ
+        ============================================ */
         @media (max-width: 768px) {
-            .mobilna-glava { display: flex; }
+            .mobilna-glava { 
+                display: flex; 
+            }
             .sidebar {
                 transform: translateX(-100%);
                 top: 0;
@@ -491,105 +496,34 @@
                 max-width: 290px;
                 box-shadow: 8px 0 24px rgba(0,0,0,0.25);
             }
-            .sidebar-odprta { transform: translateX(0); }
+            .sidebar-odprta { 
+                transform: translateX(0); 
+            }
             .glavna-vsebina {
                 margin-left: 0;
                 width: 100%;
-                padding: 76px 14px 40px;
+                padding: 76px 12px 40px;
             }
-            .hero { padding: 34px 22px; border-radius: 18px; }
-            .hero h1 { font-size: 1.9rem; }
-            h1 { font-size: 1.6rem; }
-            h2 { font-size: 1.2rem; margin: 34px 4px 14px; }
+            .hero { 
+                padding: 34px 22px; 
+                border-radius: 18px; 
+            }
+            .hero h1 { 
+                font-size: 1.9rem; 
+            }
+            h1 { 
+                font-size: 1.6rem; 
+            }
+            h2 { 
+                font-size: 1.2rem; 
+                margin: 34px 4px 14px; 
+            }
 
-            /* --- Lestvica: pretvorba tabele v kartice --- */
-            #stran-lestvice .tabela-scroll { overflow: visible; }
-            #stran-lestvice table thead { display: none; }
-            #stran-lestvice table, #stran-lestvice tbody { display: block; width: 100%; }
-            #stran-lestvice .tabela-kontejner { background: transparent; box-shadow: none; border: none; padding: 0; }
-
-            #stran-lestvice tr {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                gap: 8px 8px;
-                background: white;
-                border: 1px solid var(--line);
-                border-radius: 14px;
-                padding: 14px 14px 12px;
-                margin-bottom: 10px;
-                box-shadow: var(--shadow);
+            /* Prilagoditev tabel za manjše zaslone */
+            th, td {
+                padding: 10px 10px;
+                font-size: 0.85rem;
             }
-            #stran-lestvice td {
-                border-bottom: none;
-                padding: 0;
-                white-space: normal;
-                font-size: 0.86rem;
-            }
-            #stran-lestvice td:nth-child(1) { order: 1; flex: 0 0 auto; position: static; }
-            #stran-lestvice td:nth-child(2) {
-                order: 2; flex: 1 1 auto; text-align: left; font-size: 1rem;
-                position: static; background: transparent !important;
-            }
-            #stran-lestvice td:nth-child(7) { order: 3; flex: 0 0 auto; }
-
-            #stran-lestvice td:nth-child(3),
-            #stran-lestvice td:nth-child(4),
-            #stran-lestvice td:nth-child(5),
-            #stran-lestvice td:nth-child(6) {
-                order: 10;
-                flex: 1 1 calc(25% - 8px);
-                background: var(--sand-dim);
-                border-radius: 8px;
-                padding: 6px 2px;
-                text-align: center;
-            }
-            #stran-lestvice td:nth-child(8),
-            #stran-lestvice td:nth-child(9),
-            #stran-lestvice td:nth-child(10) {
-                order: 11;
-                flex: 1 1 calc(33.33% - 8px);
-                background: #EAF1EC;
-                border-radius: 8px;
-                padding: 6px 2px;
-                text-align: center;
-            }
-            #stran-lestvice td:nth-child(11),
-            #stran-lestvice td:nth-child(12),
-            #stran-lestvice td:nth-child(13) {
-                order: 12;
-                flex: 1 1 calc(33.33% - 8px);
-                background: #FBF1DE;
-                border-radius: 8px;
-                padding: 6px 2px;
-                text-align: center;
-            }
-            #stran-lestvice td[data-label]::before {
-                content: attr(data-label);
-                display: block;
-                font-size: 0.62rem;
-                text-transform: uppercase;
-                letter-spacing: 0.03em;
-                color: var(--muted);
-                font-weight: 700;
-                margin-bottom: 2px;
-            }
-            #stran-lestvice td:nth-child(2)::before,
-            #stran-lestvice td:nth-child(1)::before,
-            #stran-lestvice td:nth-child(7)::before { content: none; }
-
-            /* --- Tekme: pretvorba v kartice --- */
-            .vrstica-tekme { display: flex !important; flex-wrap: wrap; gap: 4px 10px;
-                background: white; border: 1px solid var(--line); border-radius: 14px;
-                padding: 14px; margin-bottom: 10px; box-shadow: var(--shadow); }
-            .vrstica-tekme td { border-bottom: none; padding: 0; white-space: normal; }
-            .vrstica-tekme .krog-dejanski { order: 0; flex: 1 1 100%; text-align: left; font-size: 0.72rem; color: var(--rust-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
-            .vrstica-tekme .ekipa-domaci { order: 1; flex: 1 1 100%; text-align: left; font-weight: 700; font-family: var(--font-display); font-size: 1rem; }
-            .vrstica-tekme .celica-rezultat { order: 2; flex: 1 1 100%; text-align: center; margin: 4px 0; }
-            .vrstica-tekme .ekipa-gostje { order: 3; flex: 1 1 100%; text-align: left; font-weight: 700; font-family: var(--font-display); font-size: 1rem; }
-            .vrstica-tekme .celica-punti { order: 4; flex: 1 1 100%; text-align: center; font-size: 0.78rem; color: var(--muted); }
-            .vrstica-tekme td[data-label]::before { content: none; }
-            .tabela-kontejner:has(.vrstica-tekme) { background: transparent; box-shadow: none; border: none; padding: 0; }
         }
     </style>
 </head>
@@ -930,48 +864,61 @@
         function generirajTekmePoKrogih(targetLiga, kontejnerId) {
             const kontejner = document.getElementById(kontejnerId);
             kontejner.innerHTML = '';
-
+ 
             const ligaTekme = vseTekme.filter(t => {
                 const l = mapeEkipInLig[t['Domaci']] || '1';
                 return targetLiga === '1' ? (l === '1' || l.includes('1')) : (l === '2' || l.includes('2'));
             });
-
+ 
             const krogiObjave = [...new Set(ligaTekme.map(t => parseInt(t['Objava'])).filter(k => !isNaN(k)))].sort((a, b) => a - b);
-
+ 
             if (krogiObjave.length === 0) {
                 kontejner.innerHTML = '<p style="text-align:center; font-style:italic; color: var(--muted);">Ni podatkov o tekmah za to ligo.</p>';
                 return;
             }
-
+ 
             krogiObjave.forEach(krogObjava => {
                 const redneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) === krogObjava);
                 const prestavljeneTekme = ligaTekme.filter(t => parseInt(t['Objava']) === krogObjava && parseInt(t['Krog']) !== krogObjava);
-
+ 
                 let krogHTML = `<h3 class="naslov-kroga">Krog ${krogObjava}</h3>`;
-
+ 
                 krogHTML += `<div class="tabela-kontejner"><div class="tabela-scroll"><table>
-                    <thead><tr><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
+                    <thead><tr>
+                        <th style="text-align:left">Domači</th>
+                        <th style="text-align:left">Gostje</th>
+                        <th style="text-align:center">Točke</th>
+                        <th style="text-align:center">Igre (D:G)</th>
+                        <th style="text-align:center">Punti (D:G)</th>
+                    </tr></thead>
                     <tbody>`;
-
+ 
                 if (redneTekme.length > 0) {
                     redneTekme.forEach(t => { krogHTML += ustvariVrsticoTekme(t); });
                 } else {
-                    krogHTML += `<tr><td colspan="4" style="text-align:center; color: var(--muted);">V tem krogu ni bilo rednih tekem.</td></tr>`;
+                    krogHTML += `<tr><td colspan="5" style="text-align:center; color: var(--muted);">V tem krogu ni bilo rednih tekem.</td></tr>`;
                 }
                 krogHTML += `</tbody></table></div></div>`;
-
+ 
                 if (prestavljeneTekme.length > 0) {
                     krogHTML += `<div class="tabela-Mala"><div class="tabela-scroll">
                         <h4 class="naslov-prestavljene">Tekme iz drugih krogov, objavljene v ${krogObjava}. krogu:</h4>
                         <table>
-                        <thead><tr><th>Dejanski Krog</th><th>Domači</th><th>Gostje</th><th style="text-align:center">Rezultat</th><th style="text-align:center">Punti (D:G)</th></tr></thead>
+                        <thead><tr>
+                            <th>Dejanski Krog</th>
+                            <th style="text-align:left">Domači</th>
+                            <th style="text-align:left">Gostje</th>
+                            <th style="text-align:center">Točke</th>
+                            <th style="text-align:center">Igre (D:G)</th>
+                            <th style="text-align:center">Punti (D:G)</th>
+                        </tr></thead>
                         <tbody>`;
                     prestavljeneTekme.forEach(t => {
                         krogHTML += ustvariVrsticoTekme(t, true);
                     });
                     krogHTML += `</tbody></table></div></div>`;
                 }
-
+ 
                 kontejner.innerHTML += krogHTML;
             });
         }
@@ -979,18 +926,23 @@
         function ustvariVrsticoTekme(t, vkljuciDejanskiKrog = false) {
             const tockeD = t['Tocke_D'] ? t['Tocke_D'].trim() : '';
             const tockeG = t['Tocke_G'] ? t['Tocke_G'].trim() : '';
+            const igreD = t['Igre_D'] ? t['Igre_D'].trim() : '';
+            const igreG = t['Igre_G'] ? t['Igre_G'].trim() : '';
             const puntiD = t['Punti_D'] ? t['Punti_D'].trim() : '';
             const puntiG = t['Punti_G'] ? t['Punti_G'].trim() : '';
-
-            const izpisRezultata = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '– : –';
-            const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `Punti ${puntiD} : ${puntiG}` : '';
+ 
+            const izpisTock = (tockeD !== '' && tockeG !== '') ? `${tockeD} : ${tockeG}` : '– : –';
+            const izpisIger = (igreD !== '' && igreG !== '') ? `${igreD} : ${igreG}` : '– : –';
+            const izpisPuntov = (puntiD !== '' && puntiG !== '') ? `${puntiD} : ${puntiG}` : '– : –';
+            
             const dejanskiKrogStolpec = vkljuciDejanskiKrog ? `<td class="krog-dejanski" data-label="Krog"><strong>Krog ${t['Krog']}</strong></td>` : '';
-
+ 
             return `<tr class="vrstica-tekme">
                 ${dejanskiKrogStolpec}
-                <td class="ekipa-domaci" data-label="Domači">${t['Domaci']}</td>
-                <td class="ekipa-gostje" data-label="Gostje">${t['Gosti']}</td>
-                <td class="celica-rezultat" data-label="Rezultat"><span class="rezultat-pill">${izpisRezultata}</span></td>
+                <td class="ekipa-domaci" data-label="Domači" style="text-align:left">${t['Domaci']}</td>
+                <td class="ekipa-gostje" data-label="Gostje" style="text-align:left">${t['Gosti']}</td>
+                <td class="celica-rezultat" data-label="Točke"><span class="rezultat-pill">${izpisTock}</span></td>
+                <td class="celica-igre" data-label="Igre">${izpisIger}</td>
                 <td class="celica-punti" data-label="Punti">${izpisPuntov}</td>
             </tr>`;
         }
